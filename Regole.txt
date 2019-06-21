@@ -1,0 +1,20 @@
+LINGUAGGI
+- C#
+- Javascript
+- (html, css, boothstrap, ecc...)
+
+PROGRAMMI
+- Visual Studio 2019
+
+CODICE
+- Variabili, funzioni, file, tutto in inglese
+
+DATABASE
+- NoSQL
+
+STORAGE 
+- Blob Storage
+
+GITHUB
+- Descrizione commit esaustiva
+- Prima di fare i marg avere l'approvazione di tutti
