@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\ConnectionComputerVision"
   ],
-  "SelectedNode": "\\ConnectionComputerVision.sln",
+  "SelectedNode": "\\ConnectionComputerVision\\Program.cs",
   "PreviewInSolutionExplorer": false
 }
