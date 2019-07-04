@@ -12,7 +12,7 @@ namespace ConnectionComputerVision
      *  Pacchetti da installare (Microsoft.Azure.CognitiveServices.Vision.ComputerVision)
      *  Passare nel costruttore CHIAVE DEL COMPUTER VISION  e URL locale dell'immagine
      *  Per ottenere i tag usare il metodo GetTags()
-     *  I Tags vengono restotuiti tramite un array di stringhe, vengono presi solo quelli con una cofidenza superiore allo 0.5
+     *  I Tags vengono restotuiti tramite il resoult del task tramite un array di stringhe, vengono presi solo quelli con una cofidenza superiore allo 0.5
      *  Per cambiare url usare SetRemoteImageUrl()
      */
 
@@ -39,7 +39,7 @@ namespace ConnectionComputerVision
             this.localImagePath  = localImagePath;
         }
 
-        public string[] GetTags()
+        public async Task<string[]> GetTags()
         {
             ComputerVisionClient computerVision = new ComputerVisionClient(
                 new ApiKeyServiceClientCredentials(subscriptionKey),
