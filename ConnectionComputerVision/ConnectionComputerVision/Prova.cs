@@ -10,7 +10,15 @@ namespace ConnectionComputerVision
     {
         static public void Main(String[] args)
         {
-            
+            ComputerVisionConnection cvc = new ComputerVisionConnection("ChiaveCV", @"PathImmagineLocale");
+            string[] resoult = cvc.GetTags();
+
+            foreach (string tag in resoult)
+            {
+                Console.WriteLine(tag);
+            }
+
+            Console.ReadLine();
         }
     }
 }

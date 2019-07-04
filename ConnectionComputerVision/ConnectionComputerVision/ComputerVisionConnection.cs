@@ -3,13 +3,14 @@ using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace ConnectionComputerVision
 {
     /*  
      *  Pacchetti da installare (Microsoft.Azure.CognitiveServices.Vision.ComputerVision)
-     *  Passare nel costruttore CHIAVE DEL COMPUTER VISION  e URL dell'immagine
+     *  Passare nel costruttore CHIAVE DEL COMPUTER VISION  e URL locale dell'immagine
      *  Per ottenere i tag usare il metodo GetTags()
      *  I Tags vengono restotuiti tramite un array di stringhe, vengono presi solo quelli con una cofidenza superiore allo 0.5
      *  Per cambiare url usare SetRemoteImageUrl()
@@ -20,8 +21,8 @@ namespace ConnectionComputerVision
         // subscriptionKey = "0123456789abcdef0123456789ABCDEF"
         private string subscriptionKey = "";
 
-        // Url of the image = "https://upload.wikimedia.org/wikipedia/commons/3/3c/Shaki_waterfall.jpg"
-        private string remoteImageUrl = "";
+        // localImagePath = @"C:\Documents\LocalImage.jpg"
+        private string localImagePath  = "";
 
         // Specify the features to return
         private static readonly List<VisualFeatureTypes> features = new List<VisualFeatureTypes>()
@@ -32,10 +33,10 @@ namespace ConnectionComputerVision
 
         private static string tagsResoult = "";
 
-        public ComputerVisionConnection(string subscriptionKey, string remoteImageUrl){
+        public ComputerVisionConnection(string subscriptionKey, string localImagePath){
             
             this.subscriptionKey = subscriptionKey;
-            this.remoteImageUrl = remoteImageUrl;
+            this.localImagePath  = localImagePath;
         }
 
         public string[] GetTags()
@@ -49,7 +50,7 @@ namespace ConnectionComputerVision
 
             try
             {
-                var t1 = AnalyzeRemoteAsync(computerVision, remoteImageUrl);
+                var t1 = AnalyzeLocalAsync(computerVision, localImagePath);
                 Task.WhenAll(t1).Wait(5000);
 
                 string[] res = tagsResoult.Split(';');
@@ -62,21 +63,27 @@ namespace ConnectionComputerVision
             }
         }
 
-        public void SetRemoteImageUrl(string remoteImageUrl)
+        public void SetRemoteImageUrl(string localImagePath)
         {
-            this.remoteImageUrl = remoteImageUrl;
+            this.localImagePath  = localImagePath;
         }
 
-        // Analyze a remote image
-        private static async Task AnalyzeRemoteAsync(ComputerVisionClient computerVision, string imageUrl)
+        // Analyze a local image
+        private static async Task AnalyzeLocalAsync(
+            ComputerVisionClient computerVision, string imagePath)
         {
-            if (!Uri.IsWellFormedUriString(imageUrl, UriKind.Absolute))
+            if (!File.Exists(imagePath))
             {
-                throw new ArgumentException("\nInvalid remoteImageUrl:\n{0} \n", imageUrl);
+                Console.WriteLine(
+                    "\nUnable to open or read localImagePath:\n{0} \n", imagePath);
+                return;
             }
 
-            ImageAnalysis analysis = await computerVision.AnalyzeImageAsync(imageUrl, features);
-            tagsResoult = DisplayResults(analysis);
+            using (Stream imageStream = File.OpenRead(imagePath))
+            {
+                ImageAnalysis analysis = await computerVision.AnalyzeImageInStreamAsync(imageStream, features);
+                tagsResoult = DisplayResults(analysis);
+            }
         }
 
         // Display the most relevant caption for the image
