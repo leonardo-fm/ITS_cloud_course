@@ -18,3 +18,8 @@ STORAGE
 GITHUB
 - Descrizione commit esaustiva
 - Prima di fare i marg avere l'approvazione di tutti
+
+SERVIZI CLOUD DA IMPLEMENTARE
+- Upload file -> Blob storage (Azure) o S3 (Aws)
+- Tag machine learning -> Computer vision api (Azure) o Amazon Rekogninton
+- Implementazione SDK Azure / S3
