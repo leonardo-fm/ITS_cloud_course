@@ -44,8 +44,8 @@ namespace DBManager
             //photo p = new photo(2, @"Somewhere\mia");
             //todoTaskCollection.InsertOne(p);
 
-            var res = todoTaskCollection.Find(x => x.idUser == '1').ToList();
-            Console.WriteLine(res);
+            //var res = todoTaskCollection.Find(x => x.idUser == '1').ToList();
+            //Console.WriteLine(res);
 
             Console.WriteLine("Premi invio per continuare...");
             Console.ReadLine();
