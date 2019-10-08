@@ -10,7 +10,7 @@ namespace ConnectionComputerVision
     {
         static public void Main(String[] args)
         {
-            ComputerVisionConnection cvc = new ComputerVisionConnection("cb1109b4c9f54f36a4d41c62b760e555", @"C:\Users\l.ferrero\Desktop\Cazzi miei\City.jpg");
+            ComputerVisionConnection cvc = new ComputerVisionConnection("subscriptionKey", @"localImagePath");
             string[] resoult = cvc.GetTags().Result;
 
             foreach (string tag in resoult)
