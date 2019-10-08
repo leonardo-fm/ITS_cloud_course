@@ -12,17 +12,28 @@ namespace ConnectionComputerVision
      *  Pacchetti da installare (Microsoft.Azure.CognitiveServices.Vision.ComputerVision)
      *  Passare nel costruttore CHIAVE DEL COMPUTER VISION  e URL locale dell'immagine
      *  Per ottenere i tag usare il metodo GetTags()
-     *  I Tags vengono restotuiti tramite il resoult del task tramite un array di stringhe, vengono presi solo quelli con una cofidenza superiore allo 0.5
-     *  Per cambiare url usare SetRemoteImageUrl()
+     *  I Tags vengono restotuiti tramite il resoult del task tramite un array di stringhe, vengono presi solo quelli con una cofidenza superiore allo 0.5 
      */
 
     class ComputerVisionConnection
     {
         // subscriptionKey = "0123456789abcdef0123456789ABCDEF"
-        private string subscriptionKey = "";
+        public static string subscriptionKey { get; set; }
 
         // localImagePath = @"C:\Documents\LocalImage.jpg"
-        private string localImagePath  = "";
+        public static string localImagePath { get; set; }
+
+        private static float _recognizeLevel = 0.5f;
+        // level of confidentiality of the AI on the image recognize
+        public static float recognizeLevel
+        {
+            get { return _recognizeLevel; }
+            set { if (value > 1f || value < 0f)
+                    throw new Exception("Parameter must be between 0.0 and 1.0");
+                else
+                    _recognizeLevel = value;
+            }
+        }
 
         // Specify the features to return
         private static readonly List<VisualFeatureTypes> features = new List<VisualFeatureTypes>()
@@ -33,13 +44,7 @@ namespace ConnectionComputerVision
 
         private static string tagsResoult = "";
 
-        public ComputerVisionConnection(string subscriptionKey, string localImagePath){
-            
-            this.subscriptionKey = subscriptionKey;
-            this.localImagePath  = localImagePath;
-        }
-
-        public async Task<string[]> GetTags()
+        public static async Task<string[]> GetTags()
         {
             ComputerVisionClient computerVision = new ComputerVisionClient(
                 new ApiKeyServiceClientCredentials(subscriptionKey),
@@ -61,11 +66,6 @@ namespace ConnectionComputerVision
             {
                 throw new ArgumentException("Wrong API parameters");
             }
-        }
-
-        public void SetRemoteImageUrl(string localImagePath)
-        {
-            this.localImagePath  = localImagePath;
         }
 
         // Analyze a local image
@@ -96,7 +96,7 @@ namespace ConnectionComputerVision
                 int numberOfTags = analysis.Tags.Count;
                 for (int i = 0; i < numberOfTags; i++)
                 {
-                    if(analysis.Tags[i].Confidence > 0.5f)
+                    if(analysis.Tags[i].Confidence > recognizeLevel)
                         resoult += analysis.Tags[i].Name + ";";
                 }
             }
