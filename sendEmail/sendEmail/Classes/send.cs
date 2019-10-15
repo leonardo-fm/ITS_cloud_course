@@ -10,10 +10,10 @@ namespace sendEmail.Classes
 {
     class send
     {
-        public static void sendNewEmail(string userEmail, string userName, string bodyText)
+        public static void sendNewEmail(string userEmail, string bodyText)
         {
             var fromAddress = new MailAddress("ourEmail", "ourName");
-            var toAddress = new MailAddress(userEmail, userName);
+            var toAddress = new MailAddress(userEmail);
             const string fromPassword = "ourPassword";
             string subject = "Subscription";
             string body = bodyText;

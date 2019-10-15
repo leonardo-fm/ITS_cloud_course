@@ -121,6 +121,7 @@
   <ItemGroup>
     <Compile Include="Classes\dbInterface.cs" />
     <Compile Include="Classes\photo.cs" />
+    <Compile Include="Classes\user.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

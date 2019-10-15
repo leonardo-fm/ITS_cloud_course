@@ -15,11 +15,11 @@ namespace DBManager.Classes
         private const string DATABASE_NAME = "progettoCloud";
         private const string DATABASE_ADMINISTRATOR_NAME = "admin";
         private const string DATABASE_ADMINISTRATOR_PASSWORD = "1235";
-        private const string COLLECTION_NAME = "userPhotos";
 
         private static MongoClient databaseConnection = null;
         private static IMongoDatabase database;
-        private static IMongoCollection<photo> collection;
+        private static IMongoCollection<photo> photoCollection;
+        private static IMongoCollection<user> userCollection;
 
         public static void connectionToMongoDB()
         {
@@ -36,7 +36,6 @@ namespace DBManager.Classes
 
                 databaseConnection = new MongoClient(connectionString);
                 database = databaseConnection.GetDatabase("progettoCloud");
-                collection = database.GetCollection<photo>(COLLECTION_NAME);
             }
             catch (Exception)
             {
@@ -44,12 +43,37 @@ namespace DBManager.Classes
             }
         }
 
-        public static void addPhotoToMongoDB(photo userPhoto)
+        public static void connectionToMongoDB(string collectionToConnect)
+        {
+            connectionToMongoDB();
+
+            if (collectionToConnect == "userPhotos")
+                photoCollection = database.GetCollection<photo>(collectionToConnect);
+            else if (collectionToConnect == "users")
+                userCollection = database.GetCollection<user>(collectionToConnect);
+            else
+                throw new ArgumentException(string.Format("Collection does not exist in the {0} database", DATABASE_NAME), "collectionNotExist");
+        }
+
+        public static void addPhotoToMongoDB(photo photoToAdd)
         {
             try
             {
-                userPhoto._id = ObjectId.GenerateNewId();
-                collection.InsertOne(userPhoto);
+                photoToAdd._id = ObjectId.GenerateNewId();
+                photoCollection.InsertOne(photoToAdd);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static void addUserToMongoDB(user userToAdd)
+        {
+            try
+            {
+                userToAdd._id = ObjectId.GenerateNewId();
+                userCollection.InsertOne(userToAdd);
             }
             catch (Exception)
             {
@@ -61,7 +85,7 @@ namespace DBManager.Classes
         {
             try
             {
-                return collection.Find(x => x.userId == userId).ToList();
+                return photoCollection.Find(x => x.userId == userId).ToList();
             }
             catch (Exception)
             {

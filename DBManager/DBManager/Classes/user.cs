@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace DBManager.Classes
 {
-    class photo
+    class user
     {
         public ObjectId _id { get; set; }
         public int userId { get; set; }
-        public List<string> tags { get; set; }
-        public string photoPath { get; set; }
+        public string userPassword { get; set; }
+        public string userEmail { get; set; }
+        public bool confirmedEmail { get; set; }
     }
 }

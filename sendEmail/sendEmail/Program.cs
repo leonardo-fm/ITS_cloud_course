@@ -16,7 +16,7 @@ namespace sendEmail
             string linkConvalidation = @"linkForConvalidation";
             string bodyText = defaultBodyText.getNewBodyForEmailSubscription(userName, linkConvalidation);
 
-            send.sendNewEmail(userEmail, userName, bodyText);
+            send.sendNewEmail(userEmail, bodyText);
 
             Console.WriteLine("Email sended successfully");
             Console.ReadKey();

@@ -1,9 +1,0 @@
-use photo
-db.createCollection("userPhoto")
-db.createUser(
-   {
-     user: "adminPhoto",
-     pwd: "adminPhoto",
-     roles: [ "readWrite" ]
-   }
-)

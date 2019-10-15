@@ -13,7 +13,7 @@ namespace DBManager
         static void Main(string[] args)
         {
             Random r = new Random();
-            dbInterface.connectionToMongoDB();
+            dbInterface.connectionToMongoDB("userPhotos");
             for (int i = 0; i < 1000; i++)
             {
                 int userIdRandom = r.Next(1, 15);
@@ -22,12 +22,12 @@ namespace DBManager
                 dbInterface.addPhotoToMongoDB(new photo { userId = userIdRandom, photoPath = photoPath });
             }
 
-            List<photo> listPhoto = dbInterface.getPhotoOfUser(9);
+            //List<photo> listPhoto = dbInterface.getPhotoOfUser(9);
 
-            foreach (photo photo in listPhoto)
-            {
-                Console.WriteLine(photo._id);
-            }
+            //foreach (photo photo in listPhoto)
+            //{
+            //    Console.WriteLine(photo._id);
+            //}
 
             Console.WriteLine("Comando eseguito");
             Console.ReadLine();

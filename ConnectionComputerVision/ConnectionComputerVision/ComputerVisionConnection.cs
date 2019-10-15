@@ -29,7 +29,7 @@ namespace ConnectionComputerVision
         {
             get { return _recognizeLevel; }
             set { if (value > 1f || value < 0f)
-                    throw new Exception("Parameter must be between 0.0 and 1.0");
+                    throw new ArgumentException("Parameter must be between 0.0 and 1.0", "wrongParameter");
                 else
                     _recognizeLevel = value;
             }
