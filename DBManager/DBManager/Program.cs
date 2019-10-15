@@ -3,52 +3,34 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Linq;
-using System.Security.Authentication;
-
-/*
- * Pacchetti da installare (MongoDB.Driver, Microsoft.Azure.DocumentDB)
- * 
- * 
- * 
- *     
- */
+using System.Threading;
+using System.Collections.Generic;
 
 namespace DBManager
 {
     class Program
     {
-        private static string host = "127.0.0.1";
-        private static string dbName = "photo";
-        private static string userName = "adminPhoto";
-        private static string password = "adminPhoto";
-        private static string collectionName = "userPhoto";
-
         static void Main(string[] args)
         {
-            MongoClientSettings settings = new MongoClientSettings();
-            settings.Server = new MongoServerAddress(host, 27017);
-            //settings.UseSsl = true;
-            settings.SslSettings = new SslSettings();
-            settings.SslSettings.EnabledSslProtocols = SslProtocols.Tls12;
+            Random r = new Random();
+            dbInterface.connectionToMongoDB();
+            for (int i = 0; i < 1000; i++)
+            {
+                int userIdRandom = r.Next(1, 15);
+                string photoPath = string.Format("C:/User/photo_{0}", i);
 
-            MongoIdentity identity = new MongoInternalIdentity(dbName, userName);
-            MongoIdentityEvidence evidence = new PasswordEvidence(password);
+                dbInterface.addPhotoToMongoDB(new photo { userId = userIdRandom, photoPath = photoPath });
+            }
 
-            settings.Credential = new MongoCredential("SCRAM-SHA-1", identity, evidence);
+            List<photo> listPhoto = dbInterface.getPhotoOfUser(9);
 
-            MongoClient client = new MongoClient(settings);
+            foreach (photo photo in listPhoto)
+            {
+                Console.WriteLine(photo._id);
+            }
 
-            var database = client.GetDatabase(dbName);
-            var todoTaskCollection = database.GetCollection<photo>(collectionName);
-
-            //photo p = new photo(2, @"Somewhere\mia");
-            //todoTaskCollection.InsertOne(p);
-
-            //var res = todoTaskCollection.Find(x => x.idUser == '1').ToList();
-            //Console.WriteLine(res);
-
-            Console.WriteLine("Premi invio per continuare...");
+            Console.WriteLine("Comando eseguito");
             Console.ReadLine();
-        }
+        }      
     }
 }
