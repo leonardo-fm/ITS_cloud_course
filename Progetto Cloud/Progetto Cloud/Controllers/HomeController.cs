@@ -26,5 +26,13 @@ namespace Progetto_Cloud.Controllers
 
             return View();
         }
+
+        public ActionResult Company()
+        {
+            ViewBag.Message = "This is my company.";
+
+
+            return View();
+        }
     }
 }
