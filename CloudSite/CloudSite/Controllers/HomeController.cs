@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CloudSite.Classes;
 
 namespace CloudSite.Controllers
 {
@@ -11,19 +12,21 @@ namespace CloudSite.Controllers
         public ActionResult Index()
         {
             return View();
-        }
+        }  
 
-        public ActionResult About()
+        public ActionResult Login()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult SignIn()
         {
-            ViewBag.Message = "Your contact page.";
+            return View();
+        }
 
+        [HttpPost]
+        public ActionResult SignIn(User user)
+        {
             return View();
         }
     }
