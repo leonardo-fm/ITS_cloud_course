@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using CloudSite.Classes;
+using CloudSite.Model;
 
 namespace CloudSite.Controllers
 {
@@ -27,6 +27,10 @@ namespace CloudSite.Controllers
         [HttpPost]
         public ActionResult SignIn(User user)
         {
+            if (ModelState.IsValid)
+            {
+                return Redirect("Index");
+            }
             return View();
         }
     }

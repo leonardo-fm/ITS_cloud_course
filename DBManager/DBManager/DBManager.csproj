@@ -119,7 +119,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\dbInterface.cs" />
+    <Compile Include="Classes\dbManager.cs" />
+    <Compile Include="Classes\photoManager.cs" />
+    <Compile Include="Classes\userManager.cs" />
     <Compile Include="Classes\photo.cs" />
     <Compile Include="Classes\user.cs" />
     <Compile Include="Program.cs" />
