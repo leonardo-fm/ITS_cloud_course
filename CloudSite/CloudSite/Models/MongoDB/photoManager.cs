@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace DBManager.Classes
+namespace CloudSite.Model
 {
-    class photoManager
+    class PhotoManager
     {
-        private IMongoCollection<photo> photoCollection;
+        private IMongoCollection<Photo> photoCollection;
 
-        public photoManager(IMongoDatabase database)
+        public PhotoManager(IMongoDatabase database)
         {
-            photoCollection = database.GetCollection<photo>("userPhotos");
+            photoCollection = database.GetCollection<Photo>("userPhotos");
         }
 
-        public void addPhotoToMongoDB(photo photoToAdd)
+        public void addPhotoToMongoDB(Photo photoToAdd)
         {
             try
             {
@@ -30,12 +28,12 @@ namespace DBManager.Classes
             }
         }
 
-        public List<photo> getPhotoOfUser(string userId)
+        public List<Photo> getPhotoOfUser(string userId)
         {
             try
             {
                 ObjectId _id = new ObjectId(userId);
-                return photoCollection.Find(x => x._id == _id).ToList();
+                return photoCollection.Find(x => x._userId == _id).ToList();
             }
             catch (Exception)
             {

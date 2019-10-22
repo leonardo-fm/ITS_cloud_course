@@ -149,16 +149,18 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Models\EmailSender\DefaultBodyText.cs" />
+    <Compile Include="Models\EmailSender\SendMail.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="MongoDB\dbManager.cs" />
-    <Compile Include="MongoDB\photo.cs" />
-    <Compile Include="MongoDB\photoManager.cs" />
-    <Compile Include="MongoDB\user.cs" />
-    <Compile Include="MongoDB\userManager.cs" />
+    <Compile Include="Models\MongoDB\DBManager.cs" />
+    <Compile Include="Models\Photo.cs" />
+    <Compile Include="Models\MongoDB\PhotoManager.cs" />
+    <Compile Include="Models\MongoDB\UserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -196,12 +198,14 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_Prova.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Login.cshtml" />
-    <Content Include="Views\Home\SignIn.cshtml" />
+    <Content Include="Views\Auth\Index.cshtml" />
+    <Content Include="Views\Auth\Login.cshtml" />
+    <Content Include="Views\Auth\SignIn.cshtml" />
+    <Content Include="Views\Auth\EmailAuth.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

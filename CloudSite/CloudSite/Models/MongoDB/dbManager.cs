@@ -1,14 +1,9 @@
-﻿using DBManager.Classes;
-using MongoDB.Bson;
+﻿using System;
 using MongoDB.Driver;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 
-namespace DBManager.Classes
+namespace CloudSite.Model
 {
-    class dbManager
+    class DBManager
     {
         private const string HOST = "127.0.0.1";
         private const string PORT = "27017";
@@ -19,14 +14,14 @@ namespace DBManager.Classes
         private MongoClient databaseConnection = null;
         private IMongoDatabase database;
 
-        public photoManager photoManager { get; set; }
-        public userManager userManager { get; set; }
+        public PhotoManager photoManager { get; set; }
+        public UserManager userManager { get; set; }
 
-        public dbManager()
+        public DBManager()
         {
             connectionToMongoDB();
-            photoManager = new photoManager(database);
-            userManager = new userManager(database);
+            photoManager = new PhotoManager(database);
+            userManager = new UserManager(database);
         }
         private void connectionToMongoDB()
         {
