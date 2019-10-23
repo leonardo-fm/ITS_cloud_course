@@ -150,6 +150,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Models\ConvalidationUserAuth\ConvalidationUser.cs" />
     <Compile Include="Models\EmailSender\DefaultBodyText.cs" />
     <Compile Include="Models\EmailSender\SendMail.cs" />
     <Compile Include="Models\User.cs" />
@@ -202,6 +203,7 @@
     <Content Include="Views\Auth\Login.cshtml" />
     <Content Include="Views\Auth\SignIn.cshtml" />
     <Content Include="Views\Auth\EmailAuth.cshtml" />
+    <Content Include="Views\Auth\SendedEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

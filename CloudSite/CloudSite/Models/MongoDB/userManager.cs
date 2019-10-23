@@ -49,10 +49,8 @@ namespace CloudSite.Model
             try
             {
                 ObjectId _id = new ObjectId(userId);
-                var user = userCollection.Find(x => x._id == _id).ToList();
-                if (user.Count == 0)
-                    return false;
 
+                var user = userCollection.Find(x => x._id == _id).ToList();
                 User userGet = user[0];
 
                 if (userGet.confirmedEmail)
@@ -64,8 +62,18 @@ namespace CloudSite.Model
             }
             catch (Exception)
             {
-                throw;
+                throw new Exception("User not found in the DB");
             }
+        }
+
+        public bool isTheUserInTheDB(string userId)
+        {
+            ObjectId _id = new ObjectId(userId);
+            var user = userCollection.Find(x => x._id == _id).ToList();
+            if (user.Count == 0)
+                return false;
+
+            return true;
         }
     }
 }

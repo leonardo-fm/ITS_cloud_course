@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using CloudSite.Model;
+using CloudSite.Models.ConvalidationUserAuth;
 
 namespace CloudSite.Controllers
 {
@@ -29,19 +31,25 @@ namespace CloudSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                DBManager dbm = new DBManager();
+                //DBManager dbm = new DBManager();
 
-                if (dbm.userManager.userAlreadyRegistered(user))
-                    return View();
+                //if (dbm.userManager.userAlreadyRegistered(user))
+                //    return View();
 
-                dbm.userManager.addUserToMongoDB(user);
+                //ConvalidationUser cu = new ConvalidationUser(user);
+                //if (!cu.isTheUserHaveValidParametres())
+                //    return View();
 
-                DefaultBodyText df = new DefaultBodyText(user.userName, user._id);
-                string text = df.getNewBodyForEmailSubscription();
-                SendMail sm = new SendMail();
-                sm.sendNewEmail(user.userEmail, text);
+                //user.userPassword = cu.cryptUserPassword(user.userPassword);
 
-                return RedirectToAction("Index", "Auth");
+                //dbm.userManager.addUserToMongoDB(user);
+
+                //DefaultBodyText df = new DefaultBodyText(user.userName, user._id);
+                //string text = df.getNewBodyForEmailSubscription();
+                //SendMail sm = new SendMail();
+                //sm.sendNewEmail(user.userEmail, text);
+
+                return RedirectToAction("SendedEmail");
             }
             return View();
         }
@@ -49,10 +57,18 @@ namespace CloudSite.Controllers
         public ActionResult EmailAuth(string userId)
         {
             DBManager dbm = new DBManager();
-            if (dbm.userManager.confirmUserToMongoDB(userId))
+            if (dbm.userManager.isTheUserInTheDB(userId))
+            {
+                dbm.userManager.confirmUserToMongoDB(userId);
                 return Content("Registrazione avvenuta");
+            }
             else
                 return Content("Errore");
+        }
+
+        public ActionResult SendedEmail()
+        {
+            return View();
         }
     }
 }

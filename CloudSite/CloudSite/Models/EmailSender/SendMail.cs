@@ -14,9 +14,9 @@ namespace CloudSite.Model
 
         public void sendNewEmail(string userEmail, string bodyText)
         {
-            var fromAddress = new MailAddress("*********@gmail.com", "Lo Fra");
+            var fromAddress = new MailAddress("progettocloud2019its@gmail.com", "Lo Fra");
             var toAddress = new MailAddress(userEmail);
-            const string fromPassword = "*********!";
+            const string fromPassword = "Progetto2019!";
             string subject = "Subscription";
             string body = bodyText;
 
