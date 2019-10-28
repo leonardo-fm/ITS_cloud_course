@@ -14,23 +14,6 @@ namespace CloudSite.Model
             userCollection = database.GetCollection<User>("users");
         }
 
-        public bool userAlreadyRegistered(User userToCheck)
-        {
-            try
-            {               
-                var emailCheck = userCollection.Find(x => x.userEmail == userToCheck.userEmail).ToList();
-
-                if (emailCheck.Count != 0)
-                    return true;
-
-                return false;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
         public void addUserToMongoDB(User userToAdd)
         {
             try
@@ -50,8 +33,8 @@ namespace CloudSite.Model
             {
                 ObjectId _id = new ObjectId(userId);
 
-                var user = userCollection.Find(x => x._id == _id).ToList();
-                User userGet = user[0];
+                var userDB = userCollection.Find(x => x._id == _id).ToList();
+                User userGet = userDB[0];
 
                 if (userGet.confirmedEmail)
                     return false;
@@ -69,11 +52,31 @@ namespace CloudSite.Model
         public bool isTheUserInTheDB(string userId)
         {
             ObjectId _id = new ObjectId(userId);
-            var user = userCollection.Find(x => x._id == _id).ToList();
-            if (user.Count == 0)
+            var userDB = userCollection.Find(x => x._id == _id).ToList();
+            if (userDB.Count == 0)
                 return false;
 
             return true;
+        }
+
+        public bool isTheEmailInTheDB(string userEmail)
+        {
+            var userDB = userCollection.Find(x => x.userEmail == userEmail).ToList();
+            if (userDB.Count == 0)
+                return false;
+
+            return true;
+        }
+
+        public User getUserData(string userEmail)
+        {
+            var userDB = userCollection.Find(x => x.userEmail == userEmail).ToList();
+            if (userDB.Count == 0)
+                return null;
+
+            User user = userDB[0];
+
+            return user;
         }
     }
 }

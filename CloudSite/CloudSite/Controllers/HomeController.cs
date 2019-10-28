@@ -10,6 +10,9 @@ namespace CloudSite.Controllers
 {
     public class HomeController : Controller
     {
-        
+        public ActionResult Home()
+        {
+            return View();
+        }
     }
 }

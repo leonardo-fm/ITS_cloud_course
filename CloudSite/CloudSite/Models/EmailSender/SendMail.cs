@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Mail;
+using CloudSite.Models;
 
 namespace CloudSite.Model
 {
@@ -14,9 +15,9 @@ namespace CloudSite.Model
 
         public void sendNewEmail(string userEmail, string bodyText)
         {
-            var fromAddress = new MailAddress("progettocloud2019its@gmail.com", "Lo Fra");
+            var fromAddress = new MailAddress(Variables.EMAIL_ADDRESS_FOR_SENDING_EMAILS, "Lo Fra");
             var toAddress = new MailAddress(userEmail);
-            const string fromPassword = "Progetto2019!";
+            const string fromPassword = Variables.PASSWORD_FOR_EMAIL_ADDRESS;
             string subject = "Subscription";
             string body = bodyText;
 

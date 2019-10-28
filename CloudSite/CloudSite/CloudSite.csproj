@@ -162,6 +162,7 @@
     <Compile Include="Models\Photo.cs" />
     <Compile Include="Models\MongoDB\PhotoManager.cs" />
     <Compile Include="Models\MongoDB\UserManager.cs" />
+    <Compile Include="Models\UserForLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -204,10 +205,10 @@
     <Content Include="Views\Auth\SignIn.cshtml" />
     <Content Include="Views\Auth\EmailAuth.cshtml" />
     <Content Include="Views\Auth\SendedEmail.cshtml" />
+    <Content Include="Views\Home\Home.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using MongoDB.Driver;
+using CloudSite.Models;
 
 namespace CloudSite.Model
 {
@@ -7,9 +8,9 @@ namespace CloudSite.Model
     {
         private const string HOST = "127.0.0.1";
         private const string PORT = "27017";
-        private const string DATABASE_NAME = "progettoCloud";
-        private const string DATABASE_ADMINISTRATOR_NAME = "admin";
-        private const string DATABASE_ADMINISTRATOR_PASSWORD = "1235";
+        private const string DATABASE_NAME = Variables.NAME_OF_DATABASE_IN_MONGODB;
+        private const string DATABASE_ADMINISTRATOR_NAME = Variables.USER_FOR_AUTHENTICATION_MONGODB;
+        private const string DATABASE_ADMINISTRATOR_PASSWORD = Variables.PASSWORD_FOR_AUTHENTICATION_MONGODB;
 
         private MongoClient databaseConnection = null;
         private IMongoDatabase database;
@@ -37,7 +38,7 @@ namespace CloudSite.Model
                 );
 
                 databaseConnection = new MongoClient(connectionString);
-                database = databaseConnection.GetDatabase("progettoCloud");
+                database = databaseConnection.GetDatabase(DATABASE_NAME);
             }
             catch (Exception)
             {

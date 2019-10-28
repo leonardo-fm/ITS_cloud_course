@@ -5,6 +5,7 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using CloudSite.Model;
+using CloudSite.Models;
 using CloudSite.Models.ConvalidationUserAuth;
 
 namespace CloudSite.Controllers
@@ -21,6 +22,23 @@ namespace CloudSite.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult Login(UserForLogin ufl)
+        {
+            DBManager dbm = new DBManager();
+
+            User user = dbm.userManager.getUserData(ufl.userEmailForLogin);
+            if (user == null || !user.confirmedEmail)
+                return View();
+
+            ConvalidationUser cu = new ConvalidationUser(user);
+
+            if (cu.checkPasswordIsTheSame(ufl.userPasswordForLogin, user.userPassword))
+                return RedirectToAction("Home", "Home");
+
+            return View();
+        }
+
         public ActionResult SignIn()
         {
             return View();
@@ -33,7 +51,7 @@ namespace CloudSite.Controllers
             {
                 //DBManager dbm = new DBManager();
 
-                //if (dbm.userManager.userAlreadyRegistered(user))
+                //if (dbm.userManager.isTheEmailInTheDB(user.userEmail))
                 //    return View();
 
                 //ConvalidationUser cu = new ConvalidationUser(user);
@@ -49,8 +67,9 @@ namespace CloudSite.Controllers
                 //SendMail sm = new SendMail();
                 //sm.sendNewEmail(user.userEmail, text);
 
-                return RedirectToAction("SendedEmail");
+                return RedirectToAction("SendedEmail", "Auth");
             }
+
             return View();
         }
 
