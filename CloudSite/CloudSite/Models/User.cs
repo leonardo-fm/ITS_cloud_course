@@ -3,7 +3,7 @@ using MongoDB.Bson;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 
-namespace CloudSite.Model
+namespace CloudSite.Models
 {
     public class User
     {

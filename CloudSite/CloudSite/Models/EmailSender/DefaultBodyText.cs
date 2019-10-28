@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 
-namespace CloudSite.Model
+namespace CloudSite.Models.EmailSender
 {
     class DefaultBodyText
     {

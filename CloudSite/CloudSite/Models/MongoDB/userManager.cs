@@ -2,9 +2,8 @@
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using CloudSite.Model;
 
-namespace CloudSite.Model
+namespace CloudSite.Models.MoongoDB
 {
     class UserManager
     {

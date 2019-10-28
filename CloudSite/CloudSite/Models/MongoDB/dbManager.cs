@@ -1,8 +1,7 @@
 ﻿using System;
 using MongoDB.Driver;
-using CloudSite.Models;
 
-namespace CloudSite.Model
+namespace CloudSite.Models.MoongoDB
 {
     class DBManager
     {

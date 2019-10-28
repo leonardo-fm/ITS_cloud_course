@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
-using CloudSite.Model;
 using CloudSite.Models;
+using CloudSite.Models.MoongoDB;
 using CloudSite.Models.ConvalidationUserAuth;
-using CloudSite.Models.ComputerVision;
+using CloudSite.Models.EmailSender;
 
 namespace CloudSite.Controllers
 {
@@ -56,23 +56,23 @@ namespace CloudSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                //dbmanager dbm = new dbmanager();
+                DBManager dbm = new DBManager();
 
-                //if (dbm.usermanager.istheemailinthedb(user.useremail))
-                //    return view();
+                if (dbm.userManager.isTheEmailInTheDB(user.userEmail))
+                    return View();
 
-                //convalidationuser cu = new convalidationuser(user);
-                //if (!cu.istheuserhavevalidparametres())
-                //    return view();
+                ConvalidationUser cu = new ConvalidationUser(user);
+                if (!cu.isTheUserHaveValidParametres())
+                    return View();
 
-                //user.userpassword = cu.cryptuserpassword(user.userpassword);
+                user.userPassword = cu.cryptUserPassword(user.userPassword);
 
-                //dbm.usermanager.addusertomongodb(user);
+                dbm.userManager.addUserToMongoDB(user);
 
-                //defaultbodytext df = new defaultbodytext(user.username, user._id);
-                //string text = df.getnewbodyforemailsubscription();
-                //sendmail sm = new sendmail();
-                //sm.sendnewemail(user.useremail, text);
+                DefaultBodyText df = new DefaultBodyText(user.userName, user._id);
+                string text = df.getNewBodyForEmailSubscription();
+                SendMail sm = new SendMail();
+                sm.sendNewEmail(user.userName, text);
 
                 return RedirectToAction("SendedEmail", "Auth");
             }

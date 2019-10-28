@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Mail;
-using CloudSite.Models;
 
-namespace CloudSite.Model
+namespace CloudSite.Models.EmailSender
 {
     class SendMail
     {

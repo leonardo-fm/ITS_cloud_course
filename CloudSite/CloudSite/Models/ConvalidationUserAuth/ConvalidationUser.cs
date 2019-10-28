@@ -5,7 +5,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Web;
-using CloudSite.Model;
 
 namespace CloudSite.Models.ConvalidationUserAuth
 {

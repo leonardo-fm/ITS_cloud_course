@@ -4,7 +4,7 @@ using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace CloudSite.Model
+namespace CloudSite.Models.MoongoDB
 {
     class PhotoManager
     {
