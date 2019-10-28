@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using CloudSite.Model;
+using CloudSite.Models;
+using CloudSite.Models.ComputerVision;
 
 namespace CloudSite.Controllers
 {
@@ -12,6 +13,10 @@ namespace CloudSite.Controllers
     {
         public ActionResult Home()
         {
+            ViewBag.user_id = Session["user_id"];
+            ViewBag.userEmail = Session["userEmail"];
+            ViewBag.userName = Session["userName"];
+
             return View();
         }
     }

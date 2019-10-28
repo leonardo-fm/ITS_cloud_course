@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using CloudSite.Model;
 using CloudSite.Models;
 using CloudSite.Models.ConvalidationUserAuth;
+using CloudSite.Models.ComputerVision;
 
 namespace CloudSite.Controllers
 {
@@ -34,7 +35,13 @@ namespace CloudSite.Controllers
             ConvalidationUser cu = new ConvalidationUser(user);
 
             if (cu.checkPasswordIsTheSame(ufl.userPasswordForLogin, user.userPassword))
+            {
+                Session["user_id"] = user._id;
+                Session["userName"] = user.userName;
+                Session["userEmail"] = user.userEmail;
+    
                 return RedirectToAction("Home", "Home");
+            }
 
             return View();
         }
@@ -49,23 +56,23 @@ namespace CloudSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                //DBManager dbm = new DBManager();
+                //dbmanager dbm = new dbmanager();
 
-                //if (dbm.userManager.isTheEmailInTheDB(user.userEmail))
-                //    return View();
+                //if (dbm.usermanager.istheemailinthedb(user.useremail))
+                //    return view();
 
-                //ConvalidationUser cu = new ConvalidationUser(user);
-                //if (!cu.isTheUserHaveValidParametres())
-                //    return View();
+                //convalidationuser cu = new convalidationuser(user);
+                //if (!cu.istheuserhavevalidparametres())
+                //    return view();
 
-                //user.userPassword = cu.cryptUserPassword(user.userPassword);
+                //user.userpassword = cu.cryptuserpassword(user.userpassword);
 
-                //dbm.userManager.addUserToMongoDB(user);
+                //dbm.usermanager.addusertomongodb(user);
 
-                //DefaultBodyText df = new DefaultBodyText(user.userName, user._id);
-                //string text = df.getNewBodyForEmailSubscription();
-                //SendMail sm = new SendMail();
-                //sm.sendNewEmail(user.userEmail, text);
+                //defaultbodytext df = new defaultbodytext(user.username, user._id);
+                //string text = df.getnewbodyforemailsubscription();
+                //sendmail sm = new sendmail();
+                //sm.sendnewemail(user.useremail, text);
 
                 return RedirectToAction("SendedEmail", "Auth");
             }
