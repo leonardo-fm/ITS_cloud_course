@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConnessioneBlobStorage
+namespace CloudSite.Models.BlobStorage
 {
     class ConnectionBS
     {
-        private UserBlobStorageManager userBSManager { get; set; }
-        public CloudBlobClient connection { get; set; }
+        public UserBlobStorageManager userBSManager { get; set; }
+        private CloudBlobClient connection { get; set; }
 
         public ConnectionBS() 
         {
@@ -27,9 +27,9 @@ namespace ConnessioneBlobStorage
         private void connectionToBlobStorage()
         {
             string storageConnectionString = "DefaultEndpointsProtocol=https;"
-                + "AccountName=progettocloudstorage"
-                + ";AccountKey=Z00ylY9K3AweU3uK4asR+0dVz29dqmqlJjLNa3LnH9eiFClkXGnAaW6OkfZ/Q6brAEtPTpSuSmIX07Le4rrr3g=="
-                + ";EndpointSuffix=core.windows.net";
+                + "AccountName=" + Variables.ACCOUNT_NAME_FOR_BLOB_STORAGE
+                + ";AccountKey=" + Variables.SUBSCRIPTION_KEY_FOR_BLOB_STORAGE
+                + ";EndpointSuffix=" + Variables.ENDPOINT_FOR_BLOB_STORAGE;
 
             CloudStorageAccount account = CloudStorageAccount.Parse(storageConnectionString);
             connection = account.CreateCloudBlobClient();

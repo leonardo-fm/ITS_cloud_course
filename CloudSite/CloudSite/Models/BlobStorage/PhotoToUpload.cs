@@ -7,12 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConnessioneBlobStorage
+namespace CloudSite.Models.BlobStorage
 {
     class PhotoToUpload
     {
-        public ObjectId _id { get; set; }
-        public ObjectId _userId { get; set; }
+        public string name_id { get; set; }
         public HttpPostedFileBase photoStream { get; set; }
     }
 }

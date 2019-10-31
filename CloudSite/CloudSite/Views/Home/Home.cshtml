@@ -13,6 +13,7 @@
 <body>
     <div>
         <p>Home page</p><br />
+        <p>@ViewBag.userEmail</p>
 
         @using (Html.BeginForm("Upload", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {

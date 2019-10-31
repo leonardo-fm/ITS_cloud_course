@@ -36,7 +36,7 @@ namespace CloudSite.Controllers
 
             if (cu.checkPasswordIsTheSame(ufl.userPasswordForLogin, user.userPassword))
             {
-                Session["user_id"] = user._id;
+                Session["user_id"] = user._id.ToString();
                 Session["userName"] = user.userName;
                 Session["userEmail"] = user.userEmail;
     
