@@ -162,7 +162,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AuthController.cs" />
-    <Compile Include="Models\ComputerVision\ComputerVisionConnection.cs" />
+    <Compile Include="Models\ComputerVision\getTagsFromImageAsync.cs" />
     <Compile Include="Models\ConvalidationUserAuth\ConvalidationUser.cs" />
     <Compile Include="Models\EmailSender\DefaultBodyText.cs" />
     <Compile Include="Models\EmailSender\SendMail.cs" />
@@ -260,6 +260,7 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Home\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

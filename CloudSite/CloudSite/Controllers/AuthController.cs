@@ -54,25 +54,26 @@ namespace CloudSite.Controllers
         [HttpPost]
         public ActionResult SignIn(User user)
         {
+            
             if (ModelState.IsValid)
             {
-                DBManager dbm = new DBManager();
+                //DBManager dbm = new DBManager();
 
-                if (dbm.userManager.isTheEmailInTheDB(user.userEmail))
-                    return View();
+                //if (dbm.userManager.isTheEmailInTheDB(user.userEmail))
+                //    return View();
 
-                ConvalidationUser cu = new ConvalidationUser(user);
-                if (!cu.isTheUserHaveValidParametres())
-                    return View();
+                //ConvalidationUser cu = new ConvalidationUser(user);
+                //if (!cu.isTheUserHaveValidParametres())
+                //    return View();
 
-                user.userPassword = cu.cryptUserPassword(user.userPassword);
+                //user.userPassword = cu.cryptUserPassword(user.userPassword);
 
-                dbm.userManager.addUserToMongoDB(user);
+                //dbm.userManager.addUserToMongoDB(user);
 
-                DefaultBodyText df = new DefaultBodyText(user.userName, user._id);
-                string text = df.getNewBodyForEmailSubscription();
-                SendMail sm = new SendMail();
-                sm.sendNewEmail(user.userName, text);
+                //DefaultBodyText df = new DefaultBodyText(user.userName, user._id);
+                //string text = df.getNewBodyForEmailSubscription();
+                //SendMail sm = new SendMail();
+                //sm.sendNewEmail(user.userName, text);
 
                 return RedirectToAction("SendedEmail", "Auth");
             }

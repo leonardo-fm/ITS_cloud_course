@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
-using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using CloudSite.Models;
 using CloudSite.Models.ComputerVision;
 
 namespace CloudSite.Controllers
@@ -23,10 +22,14 @@ namespace CloudSite.Controllers
         {
             if (file.ContentLength > 0)
             {
-                Task t1 = new Task(() => ComputerVisionConnection.uploadImageAndHandleTagsResoult(file));
-                t1.Start();
-
-                return Content("Immagine caricata");
+                var photo = file.InputStream;
+                var tags = ComputerVisionConnection.getTagsFromImage(photo);
+                string res = "";
+                foreach (string tag in tags)
+                {
+                    res += tag + " | ";
+                }
+                return Content(res);
             }
 
             return View();
