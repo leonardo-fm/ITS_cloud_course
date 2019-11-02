@@ -191,7 +191,6 @@
     <Compile Include="Models\MongoDB\PhotoManager.cs" />
     <Compile Include="Models\MongoDB\UserManager.cs" />
     <Compile Include="Models\UserForLogin.cs" />
-    <Compile Include="Models\userLoggedIn.cs" />
     <Compile Include="Models\Variables.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

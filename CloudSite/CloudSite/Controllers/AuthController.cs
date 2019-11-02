@@ -37,9 +37,11 @@ namespace CloudSite.Controllers
 
             if (cu.checkPasswordIsTheSame(ufl.userPasswordForLogin, user.userPassword))
             {
-                userLoggedIn userLoggedIn = new userLoggedIn(user._id.ToString(), user.userName, user.userEmail);
-    
-                return RedirectToAction("Home", "Home", userLoggedIn);
+                Session.Add("user_id", user._id.ToString());
+                Session.Add("userEmail", user.userEmail);
+                Session.Add("userName", user.userName);
+
+                return RedirectToAction("Home", "Home");
             }
 
             return View();
