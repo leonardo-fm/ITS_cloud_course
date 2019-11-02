@@ -8,6 +8,7 @@ using CloudSite.Models;
 using CloudSite.Models.MoongoDB;
 using CloudSite.Models.ConvalidationUserAuth;
 using CloudSite.Models.EmailSender;
+using System.Threading.Tasks;
 
 namespace CloudSite.Controllers
 {
@@ -36,11 +37,9 @@ namespace CloudSite.Controllers
 
             if (cu.checkPasswordIsTheSame(ufl.userPasswordForLogin, user.userPassword))
             {
-                Session["user_id"] = user._id.ToString();
-                Session["userName"] = user.userName;
-                Session["userEmail"] = user.userEmail;
+                userLoggedIn userLoggedIn = new userLoggedIn(user._id.ToString(), user.userName, user.userEmail);
     
-                return RedirectToAction("Home", "Home");
+                return RedirectToAction("Home", "Home", userLoggedIn);
             }
 
             return View();
@@ -57,23 +56,28 @@ namespace CloudSite.Controllers
             
             if (ModelState.IsValid)
             {
-                //DBManager dbm = new DBManager();
+                DBManager dbm = new DBManager();
 
-                //if (dbm.userManager.isTheEmailInTheDB(user.userEmail))
-                //    return View();
+                if (dbm.userManager.isTheEmailInTheDB(user.userEmail))
+                    return View();
 
-                //ConvalidationUser cu = new ConvalidationUser(user);
-                //if (!cu.isTheUserHaveValidParametres())
-                //    return View();
+                ConvalidationUser cu = new ConvalidationUser(user);
+                if (!cu.isTheUserHaveValidParametres())
+                    return View();
 
-                //user.userPassword = cu.cryptUserPassword(user.userPassword);
+                Task t1 = new Task(() =>
+                {
+                    user.userPassword = cu.cryptUserPassword(user.userPassword);
 
-                //dbm.userManager.addUserToMongoDB(user);
+                    dbm.userManager.addUserToMongoDB(user);
 
-                //DefaultBodyText df = new DefaultBodyText(user.userName, user._id);
-                //string text = df.getNewBodyForEmailSubscription();
-                //SendMail sm = new SendMail();
-                //sm.sendNewEmail(user.userName, text);
+                    DefaultBodyText df = new DefaultBodyText(user.userName, user._id);
+                    string text = df.getNewBodyForEmailSubscription();
+                    SendMail sm = new SendMail();
+                    sm.sendNewEmail(user.userEmail, text);
+                });
+
+                t1.Start();
 
                 return RedirectToAction("SendedEmail", "Auth");
             }
@@ -84,7 +88,8 @@ namespace CloudSite.Controllers
         public ActionResult EmailAuth(string userId)
         {
             DBManager dbm = new DBManager();
-            if (dbm.userManager.isTheUserInTheDB(userId))
+
+            if (userId != null && dbm.userManager.isTheUserInTheDB(userId))
             {
                 dbm.userManager.confirmUserToMongoDB(userId);
                 return Content("Registrazione avvenuta");

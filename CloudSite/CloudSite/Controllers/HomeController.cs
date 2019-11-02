@@ -7,16 +7,22 @@ using System.Web;
 using System.Web.Mvc;
 using CloudSite.Models.ComputerVision;
 using CloudSite.Models.BlobStorage;
+using CloudSite.Models;
 
 namespace CloudSite.Controllers
 {
     public class HomeController : Controller
     {
-        public string _user_id { get; set; } = "";
+        userLoggedIn userLoggedIn = null;
+
         public ActionResult Home()
         {
-            ViewBag.userEmail = Session["userEmail"];
-            _user_id = string.IsNullOrEmpty(Session["user_id"] as string) ? _user_id : Session["user_id"] as string;
+            return View();
+        }
+
+        public ActionResult Home(userLoggedIn uli)
+        {
+            userLoggedIn = new userLoggedIn(uli);
             return View();
         }
 
@@ -36,9 +42,7 @@ namespace CloudSite.Controllers
                     extension = extension.Substring(extension.IndexOf('.'));
                     ptu.name_id = ObjectId.GenerateNewId() + extension;
 
-                    string user_id = _user_id; 
-
-                    ConnectionBS cbs = new ConnectionBS(user_id);
+                    ConnectionBS cbs = new ConnectionBS(userLoggedIn._id);
                     cbs.userBSManager.addPhotoToUserContainer(ptu);
                 });
                 t2.Start();

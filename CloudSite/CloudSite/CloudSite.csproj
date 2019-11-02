@@ -56,8 +56,8 @@
     <Reference Include="Microsoft.Azure.CognitiveServices.Vision.ComputerVision, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Azure.CognitiveServices.Vision.ComputerVision.5.0.0\lib\net452\Microsoft.Azure.CognitiveServices.Vision.ComputerVision.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
+    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=3.0.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.3.0.4\lib\net461\Microsoft.Azure.KeyVault.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Azure.Storage.Blob, Version=11.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Azure.Storage.Blob.11.1.0\lib\net452\Microsoft.Azure.Storage.Blob.dll</HintPath>
@@ -191,6 +191,7 @@
     <Compile Include="Models\MongoDB\PhotoManager.cs" />
     <Compile Include="Models\MongoDB\UserManager.cs" />
     <Compile Include="Models\UserForLogin.cs" />
+    <Compile Include="Models\userLoggedIn.cs" />
     <Compile Include="Models\Variables.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
