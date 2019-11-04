@@ -175,7 +175,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Models\BlobStorage\connectionBS.cs" />
-    <Compile Include="Models\BlobStorage\PhotoToUpload.cs" />
     <Compile Include="Models\BlobStorage\userBlobStorageManager.cs" />
     <Compile Include="Models\ComputerVision\getTagsFromImageAsync.cs" />
     <Compile Include="Models\ConvalidationUserAuth\ConvalidationUser.cs" />
@@ -276,6 +275,7 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Home\Upload.cshtml" />
+    <Content Include="Views\Home\Gallery.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

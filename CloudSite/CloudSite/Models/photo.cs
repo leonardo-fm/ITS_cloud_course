@@ -7,8 +7,8 @@ namespace CloudSite.Models
     public class Photo
     {
         public ObjectId _id { get; set; }
-        public ObjectId _userId { get; set; }
-        public List<string> tags { get; set; }
-        public string photoPath { get; set; }
+        public string _userId { get; set; }
+        public string[] tags { get; set; }
+        public string photoPhat { get; set; }
     }
 }

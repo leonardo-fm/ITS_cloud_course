@@ -13,14 +13,19 @@
 <body>
     <div>
         <p>Home page</p><br />
-
-        @using (Html.BeginForm("Upload", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
-            <label for="file">Upload Image:</label>
-            <input type="file" name="file" id="file" /><br><br>
-            <input type="submit" value="Upload Image" />
-            <br><br>
-        }
+            <div>
+                <button>@Html.ActionLink("Gallery", "Gallery", "Home")</button>
+            </div>
+            <p><br /><br /></p>
+            <div>
+                @using (Html.BeginForm("Upload", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <label for="file">Upload Image:</label>
+                    <input type="file" name="file" id="file" /><br><br>
+                    <input type="submit" value="Upload Image" />
+                    <br><br>
+                }
+            </div>
     </div>
 </body>
 </html>

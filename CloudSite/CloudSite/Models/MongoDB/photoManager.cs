@@ -19,7 +19,6 @@ namespace CloudSite.Models.MoongoDB
         {
             try
             {
-                photoToAdd._id = ObjectId.GenerateNewId();
                 photoCollection.InsertOne(photoToAdd);
             }
             catch (Exception)
@@ -32,8 +31,20 @@ namespace CloudSite.Models.MoongoDB
         {
             try
             {
-                ObjectId _id = new ObjectId(userId);
-                return photoCollection.Find(x => x._userId == _id).ToList();
+                return photoCollection.Find(x => x._userId == userId).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public List<Photo> getPhotoWithTag(string tag)
+        {
+            try
+            {
+                var filter = Builders<Photo>.Filter.Eq("tags", new[] { tag });
+                return photoCollection.Find(filter).ToList();
             }
             catch (Exception)
             {

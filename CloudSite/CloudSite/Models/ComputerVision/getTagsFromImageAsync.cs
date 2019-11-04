@@ -30,7 +30,7 @@ namespace CloudSite.Models.ComputerVision
             VisualFeatureTypes.Tags
         };
 
-        public static void uploadImageAndHandleTagsResoult(HttpPostedFileBase file)
+        public static string[] uploadImageAndHandleTagsResoult(Stream photo)
         {
             ComputerVisionClient computerVision = new ComputerVisionClient(
                 new ApiKeyServiceClientCredentials(Variables.SUBSCRIPTION_KEY_FOR_AI_VISION),
@@ -38,22 +38,17 @@ namespace CloudSite.Models.ComputerVision
 
             computerVision.Endpoint = Variables.ENDPOINT_FOR_AI_VISION;
 
-            var t1 = AnalyzeLocalAsync(computerVision, file);
-            //Task.WhenAny(t1);
+            Task<string[]> t1 = AnalyzeLocalAsync(computerVision, photo);
+            t1.Wait();
 
-            string[] tags = t1.Result;
-
-            Console.WriteLine(tags.ToString());
+            return t1.Result;
         }
 
         // Analyze a local image  
-        private static async Task<string[]> AnalyzeLocalAsync(ComputerVisionClient computerVision, HttpPostedFileBase file)
+        private static async Task<string[]> AnalyzeLocalAsync(ComputerVisionClient computerVision, Stream photo)
         {
-            using (Stream photo = file.InputStream)
-            {
-                ImageAnalysis analysis = await computerVision.AnalyzeImageInStreamAsync(photo, features);
-                return DisplayResults(analysis);
-            }
+            ImageAnalysis analysis = await computerVision.AnalyzeImageInStreamAsync(photo, features);
+            return DisplayResults(analysis);
         }
         // Display the most relevant caption for the image  
         private static string[] DisplayResults(ImageAnalysis analysis)

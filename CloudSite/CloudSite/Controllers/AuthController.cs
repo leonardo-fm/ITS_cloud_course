@@ -14,11 +14,13 @@ namespace CloudSite.Controllers
 {
     public class AuthController : Controller
     {
+        [HttpGet]
         public ActionResult Index()
         {
             return View();
         }
 
+        [HttpGet]
         public ActionResult Login()
         {
             return View();
@@ -47,6 +49,7 @@ namespace CloudSite.Controllers
             return View();
         }
 
+        [HttpGet]
         public ActionResult SignIn()
         {
             return View();
@@ -87,6 +90,7 @@ namespace CloudSite.Controllers
             return View();
         }
 
+        [HttpGet]
         public ActionResult EmailAuth(string userId)
         {
             DBManager dbm = new DBManager();
@@ -100,6 +104,7 @@ namespace CloudSite.Controllers
                 return Content("Errore");
         }
 
+        [HttpGet]
         public ActionResult SendedEmail()
         {
             return View();

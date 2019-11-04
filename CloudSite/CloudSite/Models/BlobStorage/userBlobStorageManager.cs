@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace CloudSite.Models.BlobStorage
 {
@@ -37,19 +38,24 @@ namespace CloudSite.Models.BlobStorage
             _userContainer = _connection.GetContainerReference(_userId);
             _userContainer.CreateIfNotExistsAsync().Wait();
         }
-        public void addPhotoToUserContainer(PhotoToUpload ptu)
+
+        public void addPhotoToUserContainer(Stream photo, string photoName)
         {
             if (_userContainer == null)
                 throw new ArgumentException("Container is note define", "NullContainer");
             else if (_userContainer.Name != _userId)
                 throw new ArgumentException("Container don't mach the user", "NoMatchBetweenContainerAndUser");
 
-            CloudBlockBlob cBlob = _userContainer.GetBlockBlobReference(ptu.name_id.ToString());
-
-            using (Stream file = ptu.photoStream.InputStream)
-            {
-                cBlob.UploadFromStream(file);
-            }
+            CloudBlockBlob cBlob = _userContainer.GetBlockBlobReference(photoName);
+            
+            cBlob.UploadFromStream(photo);
+            photo.Close();
         } 
+
+        //public void getPhotoByName(string[] photosName)
+        public void getPhotoByName()
+        {
+            var list = _userContainer.ListBlobs("5dc03a8339aa9a2b1093738a.jpg");
+        }
     }
 }
