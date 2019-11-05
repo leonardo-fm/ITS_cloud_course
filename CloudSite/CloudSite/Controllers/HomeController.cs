@@ -10,6 +10,8 @@ using CloudSite.Models.BlobStorage;
 using CloudSite.Models.MoongoDB;
 using CloudSite.Models;
 using System.Collections.Generic;
+using Azure.Storage.Blobs;
+using Azure.Identity;
 
 namespace CloudSite.Controllers
 {
@@ -32,10 +34,12 @@ namespace CloudSite.Controllers
             //    name.Add(photo._id.ToString());
             //}
 
-            ConnectionBS cdb = new ConnectionBS((string)Session["user_id"]);
-            cdb.userBSManager.getPhotoByName();
+            ConnectionBS cbs = new ConnectionBS((string)Session["user_id"]);
+            Task<string> t1 = new Task<string>(() => cbs.userBSManager.getUserSasKey("progettocloudstorage", (string)Session["user_id"]));
+            t1.Start();
+            t1.Wait();
 
-            return View();
+            return Content(t1.Result);
         }
 
         [HttpPost]

@@ -50,6 +50,7 @@ namespace CloudSite.Models.ComputerVision
             ImageAnalysis analysis = await computerVision.AnalyzeImageInStreamAsync(photo, features);
             return DisplayResults(analysis);
         }
+
         // Display the most relevant caption for the image  
         private static string[] DisplayResults(ImageAnalysis analysis)
         {

@@ -1,11 +1,6 @@
-﻿using Microsoft.WindowsAzure.Storage.Blob;
+﻿using Microsoft.Azure.Storage.Blob;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace CloudSite.Models.BlobStorage
 {
@@ -50,12 +45,7 @@ namespace CloudSite.Models.BlobStorage
             
             cBlob.UploadFromStream(photo);
             photo.Close();
-        } 
-
-        //public void getPhotoByName(string[] photosName)
-        public void getPhotoByName()
-        {
-            var list = _userContainer.ListBlobs("5dc03a8339aa9a2b1093738a.jpg");
         }
+        
     }
 }
