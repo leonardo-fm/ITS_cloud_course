@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using CloudSite.Models.ComputerVision;
 using CloudSite.Models.BlobStorage;
 using CloudSite.Models.MoongoDB;
+using CloudSite.Models.Log;
 using CloudSite.Models;
 using System.Collections.Generic;
 using Azure.Storage.Blobs;
@@ -26,20 +27,19 @@ namespace CloudSite.Controllers
         [HttpGet]
         public ActionResult Gallery()
         {
-            //DBManager dbm = new DBManager();
-            //List<Photo> photos = dbm.photoManager.getPhotoOfUser((string)Session["user_id"]);
-            //List<string> name = new List<string>();
-            //foreach (Photo photo in photos)
-            //{
-            //    name.Add(photo._id.ToString());
-            //}
-
             ConnectionBS cbs = new ConnectionBS((string)Session["user_id"]);
-            Task<string> t1 = new Task<string>(() => cbs.userBSManager.getUserSasKey("progettocloudstorage", (string)Session["user_id"]));
-            t1.Start();
-            t1.Wait();
+            string sasKey = cbs.userBSManager.GetContainerSasUri(cbs.userBSManager.userContainer);
 
-            return Content(t1.Result);
+            DBManager dbm = new DBManager();
+            List<Photo> photos = dbm.photoManager.getPhotoOfUser((string)Session["user_id"]);
+            List<string> imgLinks = new List<string>();
+            foreach (Photo photo in photos)
+            {
+                imgLinks.Add(photo.photoPhat + sasKey);
+            }
+
+            ViewBag.images = imgLinks;
+            return View();
         }
 
         [HttpPost]
@@ -47,6 +47,8 @@ namespace CloudSite.Controllers
         {
             if (file != null && file.ContentType.StartsWith("image/"))
             {
+                LogManager.writeOnLog("user " + (string)Session["user_id"] + " uploaded an image with name " + file.FileName);
+
                 string extension = file.FileName.Substring(file.FileName.IndexOf('.'));
 
                 Photo userPhoto = new Photo();
@@ -76,6 +78,7 @@ namespace CloudSite.Controllers
 
                 userPhoto.tags = t1.Result;
                 userPhoto._userId = (string)Session["user_id"];
+                userPhoto.imageName = file.FileName;
 
                 DBManager dbm = new DBManager();
                 dbm.photoManager.addPhotoToMongoDB(userPhoto);

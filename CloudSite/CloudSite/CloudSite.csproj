@@ -229,6 +229,7 @@
     <Compile Include="Models\ConvalidationUserAuth\ConvalidationUser.cs" />
     <Compile Include="Models\EmailSender\DefaultBodyText.cs" />
     <Compile Include="Models\EmailSender\SendMail.cs" />
+    <Compile Include="Models\Log\LogManager.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">

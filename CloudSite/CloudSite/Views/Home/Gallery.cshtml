@@ -5,3 +5,12 @@
 
 <h2>Gallery</h2>
 
+<div>
+    @foreach (string link in ViewBag.images)
+    {
+    <p>
+        <img src="@link"/>
+    </p>
+    }
+</div>
+

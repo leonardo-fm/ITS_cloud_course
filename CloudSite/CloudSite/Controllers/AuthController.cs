@@ -5,6 +5,7 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using CloudSite.Models;
+using CloudSite.Models.Log;
 using CloudSite.Models.MoongoDB;
 using CloudSite.Models.ConvalidationUserAuth;
 using CloudSite.Models.EmailSender;
@@ -42,6 +43,8 @@ namespace CloudSite.Controllers
                 Session.Add("user_id", user._id.ToString());
                 Session.Add("userEmail", user.userEmail);
                 Session.Add("userName", user.userName);
+
+                LogManager.writeOnLog("user " + user._id.ToString() + " is logged in.");
 
                 return RedirectToAction("Home", "Home");
             }
