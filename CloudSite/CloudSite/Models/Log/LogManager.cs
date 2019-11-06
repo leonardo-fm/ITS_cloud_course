@@ -20,7 +20,7 @@ namespace CloudSite.Models.Log
 
         private static string putDefaultStringForLog(string message)
         {
-            string defaultString = string.Format("{0}/{1}/{2} {3}:{4}:{5}.{6} | ", 
+            string defaultString = string.Format("Utc - {0}/{1}/{2} {3}:{4}:{5}.{6} | ", 
                 DateTime.UtcNow.Day.ToString("d2"), DateTime.UtcNow.Month.ToString("d2"), DateTime.UtcNow.Year, DateTime.UtcNow.Hour.ToString("d2"), 
                 DateTime.Now.Minute.ToString("d2"), DateTime.Now.Second.ToString("d2"), DateTime.Now.Millisecond.ToString("d3"));
 

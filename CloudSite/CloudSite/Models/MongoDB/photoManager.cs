@@ -12,7 +12,7 @@ namespace CloudSite.Models.MoongoDB
 
         public PhotoManager(IMongoDatabase database)
         {
-            photoCollection = database.GetCollection<Photo>("userPhotos");
+            photoCollection = database.GetCollection<Photo>(Variables.NAME_OF_TABLE_FOR_PHOTOS_IN_MONGODB);
         }
 
         public void addPhotoToMongoDB(Photo photoToAdd)

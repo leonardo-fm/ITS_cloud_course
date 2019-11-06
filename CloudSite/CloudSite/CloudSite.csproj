@@ -223,6 +223,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Models\AsyncFunctions\AsyncFunctionToUse.cs" />
     <Compile Include="Models\BlobStorage\connectionBS.cs" />
     <Compile Include="Models\BlobStorage\userBlobStorageManager.cs" />
     <Compile Include="Models\ComputerVision\getTagsFromImageAsync.cs" />

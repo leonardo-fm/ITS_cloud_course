@@ -6,13 +6,15 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Web;
 
+//https://docs.microsoft.com/it-it/azure/cognitive-services/computer-vision/quickstarts/csharp-analyze
+
 namespace CloudSite.Models.ComputerVision
 {
 
     class ComputerVisionConnection
     {
-        private static float _recognizeLevel = 0.5f;
-        public static float recognizeLevel
+        private static float _recognizeLevel;
+        private static float recognizeLevelPublic
         {
             get { return _recognizeLevel; }
             set { if (value > 1f || value < 0f)
@@ -30,8 +32,10 @@ namespace CloudSite.Models.ComputerVision
             VisualFeatureTypes.Tags
         };
 
-        public static string[] uploadImageAndHandleTagsResoult(Stream photo)
+        public static string[] uploadImageAndHandleTagsResoult(Stream photo, float recognizeLevel = 0.5f)
         {
+            recognizeLevelPublic = recognizeLevel;
+
             ComputerVisionClient computerVision = new ComputerVisionClient(
                 new ApiKeyServiceClientCredentials(Variables.SUBSCRIPTION_KEY_FOR_AI_VISION),
                 new System.Net.Http.DelegatingHandler[] { });

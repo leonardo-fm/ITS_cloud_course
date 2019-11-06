@@ -10,7 +10,7 @@ namespace CloudSite.Models.MoongoDB
         private IMongoCollection<User> userCollection;
         public UserManager(IMongoDatabase database)
         {
-            userCollection = database.GetCollection<User>("users");
+            userCollection = database.GetCollection<User>(Variables.NAME_OF_TABLE_FOR_USERS_IN_MONGODB);
         }
 
         public void addUserToMongoDB(User userToAdd)
@@ -50,32 +50,56 @@ namespace CloudSite.Models.MoongoDB
 
         public bool isTheUserInTheDB(string userId)
         {
-            ObjectId _id = new ObjectId(userId);
-            var userDB = userCollection.Find(x => x._id == _id).ToList();
-            if (userDB.Count == 0)
-                return false;
+            try
+            {
+                ObjectId _id = new ObjectId(userId);
+                var userDB = userCollection.Find(x => x._id == _id).ToList();
+                if (userDB.Count == 0)
+                    return false;
 
-            return true;
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public bool isTheEmailInTheDB(string userEmail)
         {
-            var userDB = userCollection.Find(x => x.userEmail == userEmail).ToList();
-            if (userDB.Count == 0)
-                return false;
+            try
+            {
+                var userDB = userCollection.Find(x => x.userEmail == userEmail).ToList();
+                if (userDB.Count == 0)
+                    return false;
 
-            return true;
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public User getUserData(string userEmail)
         {
-            var userDB = userCollection.Find(x => x.userEmail == userEmail).ToList();
-            if (userDB.Count == 0)
-                return null;
+            try
+            {
+                var userDB = userCollection.Find(x => x.userEmail == userEmail).ToList();
+                if (userDB.Count == 0)
+                    return null;
 
-            User user = userDB[0];
+                User user = userDB[0];
 
-            return user;
+                return user;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

@@ -8,8 +8,7 @@ using CloudSite.Models;
 using CloudSite.Models.Log;
 using CloudSite.Models.MoongoDB;
 using CloudSite.Models.ConvalidationUserAuth;
-using CloudSite.Models.EmailSender;
-using System.Threading.Tasks;
+using CloudSite.Models.AsyncFunctions;
 
 namespace CloudSite.Controllers
 {
@@ -44,7 +43,7 @@ namespace CloudSite.Controllers
                 Session.Add("userEmail", user.userEmail);
                 Session.Add("userName", user.userName);
 
-                LogManager.writeOnLog("user " + user._id.ToString() + " is logged in.");
+                LogManager.writeOnLog("user " + user._id.ToString() + " is logged in");
 
                 return RedirectToAction("Home", "Home");
             }
@@ -73,19 +72,7 @@ namespace CloudSite.Controllers
                 if (!cu.isTheUserHaveValidParametres())
                     return View();
 
-                Task t1 = new Task(() =>
-                {
-                    user.userPassword = cu.cryptUserPassword(user.userPassword);
-
-                    dbm.userManager.addUserToMongoDB(user);
-
-                    DefaultBodyText df = new DefaultBodyText(user.userName, user._id);
-                    string text = df.getNewBodyForEmailSubscription();
-                    SendMail sm = new SendMail();
-                    sm.sendNewEmail(user.userEmail, text);
-                });
-
-                t1.Start();
+                AsyncFunctionToUse.sendMailForConvalidation(user);
 
                 return RedirectToAction("SendedEmail", "Auth");
             }
