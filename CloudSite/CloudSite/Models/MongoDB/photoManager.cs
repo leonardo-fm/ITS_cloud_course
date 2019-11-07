@@ -39,12 +39,11 @@ namespace CloudSite.Models.MoongoDB
             }
         }
 
-        public List<Photo> getPhotoWithTag(string tag)
+        public List<Photo> getPhotoWithTag(string userId, string tag)
         {
             try
             {
-                var filter = Builders<Photo>.Filter.Eq("tags", new[] { tag });
-                return photoCollection.Find(filter).ToList();
+                return photoCollection.Find(x => x.tags.Any(y => y.Contains(tag)) && x._userId == userId).ToList();
             }
             catch (Exception)
             {

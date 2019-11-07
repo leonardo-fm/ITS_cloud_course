@@ -43,6 +43,29 @@ namespace CloudSite.Controllers
         }
 
         [HttpPost]
+        public  ActionResult GalleryTag(string tag)
+        {
+            if (!string.IsNullOrEmpty(tag) && !string.IsNullOrWhiteSpace(tag))
+            {
+                ConnectionBS cbs = new ConnectionBS((string)Session["user_id"]);
+                string sasKey = cbs.userBSManager.GetContainerSasUri(cbs.userBSManager.userContainer);
+
+                DBManager dbm = new DBManager();
+                List<Photo> photos = dbm.photoManager.getPhotoWithTag((string)Session["user_id"], tag);
+                List<string> imgLinks = new List<string>();
+                foreach (Photo photo in photos)
+                {
+                    imgLinks.Add(photo.photoPhat + sasKey);
+                }
+
+                ViewBag.images = imgLinks;
+                return View();
+            }
+
+            return RedirectToAction("Gallery", "Home");
+        }
+
+        [HttpPost]
         public ActionResult Upload(HttpPostedFileBase file)
         {
             if (file != null && file.ContentType.StartsWith("image/"))

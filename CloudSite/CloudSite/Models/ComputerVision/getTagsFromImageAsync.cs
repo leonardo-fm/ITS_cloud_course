@@ -67,7 +67,7 @@ namespace CloudSite.Models.ComputerVision
                 for (int i = 0; i < numberOfTags; i++)
                 {
                     if (analysis.Tags[i].Confidence > _recognizeLevel)
-                        resoult.Add(analysis.Tags[i].Name);
+                        resoult.Add(analysis.Tags[i].Name.ToLower());
                 }
             }
 

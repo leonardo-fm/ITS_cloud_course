@@ -327,6 +327,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Home\Upload.cshtml" />
     <Content Include="Views\Home\Gallery.cshtml" />
+    <Content Include="Views\Home\GalleryTag.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
