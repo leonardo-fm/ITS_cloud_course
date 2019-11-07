@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.IO;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace CloudSite.Models.Log
 {
     public static class LogManager
     {
-        public static void createFileLog()
+        public static void createOrCheckIfExistFileLog()
         {
-            if (!File.Exists(Variables.LOG_DIRECTORY_PATH))
+            if (!File.Exists(Variables.LOG_FILE_PATH))
             {
-                File.Create(Variables.LOG_DIRECTORY_PATH + @"/Log.log");
+                File.Create(Variables.LOG_FILE_PATH);
             }
             
             return;
@@ -30,9 +32,37 @@ namespace CloudSite.Models.Log
         public static void writeOnLog(string message)
         {
             string finalMassage = putDefaultStringForLog(message);
-            using(TextWriter logFile = new StreamWriter(Variables.LOG_DIRECTORY_PATH + @"/Log.log", true))
+
+            try
             {
-                logFile.WriteLine(finalMassage);
+                using (TextWriter logFile = new StreamWriter(Variables.LOG_FILE_PATH, true))
+                {
+                    logFile.WriteLine(finalMassage);
+                }
+            }
+            catch (Exception)
+            {
+                Task ptl = new Task(() => putInLogLater(finalMassage));
+                ptl.Start();
+            }
+        }
+
+        private static void putInLogLater(string message)
+        {
+            int attempts = 3;
+
+            while (--attempts > 0)
+            {
+                Thread.Sleep(5000);
+
+                try
+                {
+                    using (TextWriter logFile = new StreamWriter(Variables.LOG_FILE_PATH, true))
+                    {
+                        logFile.WriteLine(message);
+                    }
+                }
+                catch (Exception){ }
             }
         }
     }
