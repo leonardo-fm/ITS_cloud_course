@@ -50,5 +50,21 @@ namespace CloudSite.Models.MoongoDB
                 throw;
             }
         }
+
+        public void removePhotos(List<string> photoIdToRemoveWithNoExtension)
+        {
+            try
+            {
+                foreach (string photoId in photoIdToRemoveWithNoExtension)
+                {
+                    photoCollection.FindOneAndDelete(x => x._id == new ObjectId(photoId));
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

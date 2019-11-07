@@ -13,6 +13,7 @@ using CloudSite.Models;
 using System.Collections.Generic;
 using Azure.Storage.Blobs;
 using Azure.Identity;
+using System.Drawing;
 
 namespace CloudSite.Controllers
 {

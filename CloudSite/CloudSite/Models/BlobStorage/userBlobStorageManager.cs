@@ -1,5 +1,6 @@
 ﻿using Microsoft.Azure.Storage.Blob;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace CloudSite.Models.BlobStorage
@@ -33,6 +34,23 @@ namespace CloudSite.Models.BlobStorage
         {
             userContainer = _connection.GetContainerReference(_userId);
             userContainer.CreateIfNotExistsAsync().Wait();
+        }
+
+        public void removePhotoFromBlobStorage(List<string> photosName)
+        {
+            foreach (string name in photosName)
+            {
+                try
+                {
+                    var blobToDelete = userContainer.GetBlockBlobReference(name);
+                    blobToDelete.DeleteIfExists();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
         }
 
         public void addPhotoToUserContainer(Stream photo, string photoName)
