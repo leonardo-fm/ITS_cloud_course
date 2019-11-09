@@ -18,6 +18,7 @@ namespace CloudSite.Models
         public string photoTagDateTime { get; set; }    //0x0132
         public string photoTagImageWidth { get; set; }  //0x0100
         public string photoTagImageHeight { get; set; } //0x0101
+        public string photoTagThumbnailEquipModel { get; set; } //0x110
 
     }
 }

@@ -8,6 +8,7 @@ using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -69,7 +70,6 @@ namespace CloudSite.Models.AsyncFunctions
 
             Stream photoForCV = new MemoryStream();
             Stream photoForBS = new MemoryStream();
-            Image imageForExif = null;
 
             using (Stream photo = file.InputStream)
             {
@@ -82,16 +82,15 @@ namespace CloudSite.Models.AsyncFunctions
                 photoForBS.Seek(0, SeekOrigin.Begin);
                 photo.Seek(0, SeekOrigin.Begin);
 
-                imageForExif = Image.FromStream(photo);
-            }
+                PropertyItem[] exifArray = Image.FromStream(photo).PropertyItems;
 
-            Task sendImageToComputerVisionAndBlobStorage = new Task(() => sendImageToCVandBS(userPhoto, photoForCV, photoForBS, userId, extension, imageForExif));
-            sendImageToComputerVisionAndBlobStorage.Start();
+                Task sendImageToComputerVisionAndBlobStorage = new Task(() => sendImageToCVandBS(userPhoto, photoForCV, photoForBS, userId, extension, exifArray));
+                sendImageToComputerVisionAndBlobStorage.Start();
+            }
         }
 
-        private static void sendImageToCVandBS(Photo userPhoto, Stream photoForCV, Stream photoForBS, string userId, string extension, Image imageForExif)
+        private static void sendImageToCVandBS(Photo userPhoto, Stream photoForCV, Stream photoForBS, string userId, string extension, PropertyItem[] exifArray)
         {
-
             Task<string[]> sendImageToComputerVision = new Task<string[]>(() => ComputerVisionConnection.uploadImageAndHandleTagsResoult(photoForCV));
             Task uploadImageToBlobStorage = new Task(() => uploadPhotoToBlobStorage(userId, photoForBS, extension, ref userPhoto));
 
@@ -104,14 +103,39 @@ namespace CloudSite.Models.AsyncFunctions
             userPhoto._userId = userId;
 
             DBManager dbm = new DBManager();
-            userPhoto.photoGpsLatitude = Encoding.UTF8.GetString(imageForExif.GetPropertyItem(0x0002).Value);
-            userPhoto.photoGpsLongitude = Encoding.UTF8.GetString(imageForExif.GetPropertyItem(0x0004).Value);
-            userPhoto.photoTagDateTime = Encoding.UTF8.GetString(imageForExif.GetPropertyItem(0x0132).Value);
-            userPhoto.photoTagImageWidth = Encoding.UTF8.GetString(imageForExif.GetPropertyItem(0x0100).Value);
-            userPhoto.photoTagImageHeight = Encoding.UTF8.GetString(imageForExif.GetPropertyItem(0x0101).Value);
+
+            Dictionary<int, byte[]> exifDictionary = exifArray.ToDictionary(x => x.Id, x => x.Value != null ? x.Value : new byte[] { });
+
+            userPhoto.photoGpsLatitude = exifDictionary.ContainsKey(0x0002) ? getGPSValues(exifDictionary[0x0002]) : "";
+            userPhoto.photoGpsLongitude = exifDictionary.ContainsKey(0x0004) ? getGPSValues(exifDictionary[0x0004]) : "";
+            userPhoto.photoTagDateTime = exifDictionary.ContainsKey(0x0132) ? Encoding.UTF8.GetString(exifDictionary[0x0132]).Replace("\0", "") : "";
+            userPhoto.photoTagThumbnailEquipModel = exifDictionary.ContainsKey(0x010F) && exifDictionary.ContainsKey(0x0110) ?
+                Encoding.UTF8.GetString(exifDictionary[0x010F]).Replace("\0", "")
+                + "/" + Encoding.UTF8.GetString(exifDictionary[0x0110]).Replace("\0", "") : "";
+            userPhoto.photoTagImageWidth = exifDictionary.ContainsKey(0x0100) ? BitConverter.ToInt16(exifDictionary[0x0100], 0).ToString() : "";
+            userPhoto.photoTagImageHeight = exifDictionary.ContainsKey(0x0101) ? BitConverter.ToInt16(exifDictionary[0x0101], 0).ToString(): "";
 
             dbm.photoManager.addPhotoToMongoDB(userPhoto);
         }
+
+        private static string getGPSValues(byte[] value)
+        {
+            byte[] degrees1 = new byte[] { value[0], value[1], value[2], value[3] };
+            byte[] degrees2 = new byte[] { value[4], value[5], value[6], value[7] };
+
+            byte[] first1 = new byte[] { value[8], value[9], value[10], value[11] };
+            byte[] first2 = new byte[] { value[12], value[13], value[14], value[15] };
+
+            byte[] second1 = new byte[] { value[16], value[17], value[18], value[19] };
+            byte[] second2 = new byte[] { value[20], value[21], value[22], value[23] };
+
+            double degrees = (double)BitConverter.ToInt32(degrees1, 0) / BitConverter.ToInt32(degrees2, 0);
+            double firsts = (double)BitConverter.ToInt32(first1, 0) / BitConverter.ToInt32(first2, 0);
+            double seconds = (double)BitConverter.ToInt32(second1, 0) / BitConverter.ToInt32(second2, 0);
+
+            return string.Format("{0}° {1}' {2}''", degrees, firsts, seconds);
+        }
+
         private static void uploadPhotoToBlobStorage(string userId, Stream photo, string extension, ref Photo userPhoto)
         {
             userPhoto._id = ObjectId.GenerateNewId();
