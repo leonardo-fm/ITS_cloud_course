@@ -22,6 +22,8 @@ namespace CloudSite.Controllers
         [HttpGet]
         public ActionResult Home()
         {
+            ConnectionBS cbs = new ConnectionBS((string)Session["user_id"]);
+
             return View();
         }
 
@@ -29,10 +31,10 @@ namespace CloudSite.Controllers
         public ActionResult Gallery()
         {
             ConnectionBS cbs = new ConnectionBS((string)Session["user_id"]);
-            string sasKey = cbs.userBSManager.GetContainerSasUri(cbs.userBSManager.userContainer);
+            string sasKey = cbs.userBSManager.GetContainerSasUri();
 
             DBManager dbm = new DBManager();
-            List<Photo> photos = dbm.photoManager.getPhotoOfUser((string)Session["user_id"]);
+            List<Photo> photos = dbm.photoManager.GetPhotoOfUser((string)Session["user_id"]);
             List<string> imgLinks = new List<string>();
             foreach (Photo photo in photos)
             {
@@ -49,10 +51,10 @@ namespace CloudSite.Controllers
             if (!string.IsNullOrEmpty(tag) && !string.IsNullOrWhiteSpace(tag))
             {
                 ConnectionBS cbs = new ConnectionBS((string)Session["user_id"]);
-                string sasKey = cbs.userBSManager.GetContainerSasUri(cbs.userBSManager.userContainer);
+                string sasKey = cbs.userBSManager.GetContainerSasUri();
 
                 DBManager dbm = new DBManager();
-                List<Photo> photos = dbm.photoManager.getPhotoWithTag((string)Session["user_id"], tag);
+                List<Photo> photos = dbm.photoManager.GetPhotoWithTag((string)Session["user_id"], tag);
                 List<string> imgLinks = new List<string>();
                 foreach (Photo photo in photos)
                 {
@@ -71,9 +73,9 @@ namespace CloudSite.Controllers
         {
             if (file != null && file.ContentType.StartsWith("image/"))
             {
-                LogManager.writeOnLog("user " + (string)Session["user_id"] + " uploaded an image with name " + file.FileName);
+                LogManager.WriteOnLog("user " + (string)Session["user_id"] + " uploaded an image with name " + file.FileName);
 
-                AsyncFunctionToUse.uploadPhoto(file, (string)Session["user_id"]);
+                AsyncFunctionToUse.UploadPhoto(file, (string)Session["user_id"]);
 
                 return View();
             }

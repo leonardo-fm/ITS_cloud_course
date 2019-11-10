@@ -12,31 +12,27 @@ namespace CloudSite.Models.BlobStorage
 
         public CloudBlobContainer userContainer;
 
-        public UserBlobStorageManager(CloudBlobClient connection)
-        {
-            _connection = connection;
-        }
         public UserBlobStorageManager(CloudBlobClient connection, string userId)
         {
             _connection = connection;
             _userId = userId;
 
-            selectConteinerUser();
+            SelectConteinerUser();
         }
 
-        public void changeUserSelected(string userId)
+        public void ChangeUserSelected(string userId)
         {
             _userId = userId;
-            selectConteinerUser();
+            SelectConteinerUser();
         }
 
-        private void selectConteinerUser()
+        private void SelectConteinerUser()
         {
             userContainer = _connection.GetContainerReference(_userId);
             userContainer.CreateIfNotExistsAsync().Wait();
         }
 
-        public void removePhotoFromBlobStorage(List<string> photosName)
+        public void RemovePhotoFromBlobStorage(List<string> photosName)
         {
             foreach (string name in photosName)
             {
@@ -53,7 +49,7 @@ namespace CloudSite.Models.BlobStorage
             }
         }
 
-        public void addPhotoToUserContainer(Stream photo, string photoName)
+        public void AddPhotoToUserContainer(Stream photo, string photoName)
         {
             if (userContainer == null)
                 throw new ArgumentException("Container is note define", "NullContainer");
@@ -66,21 +62,27 @@ namespace CloudSite.Models.BlobStorage
             photo.Close();
         }
 
-        //https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-service-sas-create-dotnet
-        public string GetContainerSasUri(CloudBlobContainer container)
+        // References: https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-service-sas-create-dotnet
+        public string GetContainerSasUri(int minutesToAdd = 1)
         {
             string sasContainerToken;
             int timeDifferencesInMinutes = (DateTime.Now.Hour - DateTime.UtcNow.Hour) * 60;
 
             SharedAccessBlobPolicy adHocPolicy = new SharedAccessBlobPolicy()
             {
-                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(1 + timeDifferencesInMinutes),
+                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(minutesToAdd + timeDifferencesInMinutes),
                 Permissions = SharedAccessBlobPermissions.Read
             };
 
-            sasContainerToken = container.GetSharedAccessSignature(adHocPolicy, null);
+            sasContainerToken = userContainer.GetSharedAccessSignature(adHocPolicy, null);
             
             return sasContainerToken;
+        }
+
+        public string GetLinkForSharePhoto(DateTime expireDate)
+        {
+            int totalNumberOfMinutesToAdd = (int)(expireDate - DateTime.Now).TotalMinutes;
+            return GetContainerSasUri(totalNumberOfMinutesToAdd);
         }
     }
 }

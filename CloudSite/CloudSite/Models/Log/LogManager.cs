@@ -10,7 +10,7 @@ namespace CloudSite.Models.Log
 {
     public static class LogManager
     {
-        public static void createOrCheckIfExistFileLog()
+        public static void CreateOrCheckIfExistFileLog()
         {
             if (!File.Exists(Variables.LOG_FILE_PATH))
             {
@@ -20,7 +20,7 @@ namespace CloudSite.Models.Log
             return;
         }
 
-        private static string putDefaultStringForLog(string message)
+        private static string PutDefaultStringForLog(string message)
         {
             string defaultString = string.Format("Utc - {0}/{1}/{2} {3}:{4}:{5}.{6} | ", 
                 DateTime.UtcNow.Day.ToString("d2"), DateTime.UtcNow.Month.ToString("d2"), DateTime.UtcNow.Year, DateTime.UtcNow.Hour.ToString("d2"), 
@@ -29,9 +29,9 @@ namespace CloudSite.Models.Log
             return defaultString + message;
         }
 
-        public static void writeOnLog(string message)
+        public static void WriteOnLog(string message)
         {
-            string finalMassage = putDefaultStringForLog(message);
+            string finalMassage = PutDefaultStringForLog(message);
 
             try
             {
@@ -42,12 +42,12 @@ namespace CloudSite.Models.Log
             }
             catch (Exception)
             {
-                Task ptl = new Task(() => putInLogLater(finalMassage));
+                Task ptl = new Task(() => PutInLogLater(finalMassage));
                 ptl.Start();
             }
         }
 
-        private static void putInLogLater(string message)
+        private static void PutInLogLater(string message)
         {
             int attempts = 3;
 

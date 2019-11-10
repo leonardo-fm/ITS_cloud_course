@@ -13,7 +13,7 @@ namespace CloudSite.Models.MoongoDB
             userCollection = database.GetCollection<User>(Variables.NAME_OF_TABLE_FOR_USERS_IN_MONGODB);
         }
 
-        public void addUserToMongoDB(User userToAdd)
+        public void AddUserToMongoDB(User userToAdd)
         {
             try
             {
@@ -26,7 +26,7 @@ namespace CloudSite.Models.MoongoDB
             }
         }
 
-        public bool confirmUserToMongoDB(string userId)
+        public bool ConfirmUserToMongoDB(string userId)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace CloudSite.Models.MoongoDB
             }
         }
 
-        public bool isTheUserInTheDB(string userId)
+        public bool IsTheUserInTheDB(string userId)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace CloudSite.Models.MoongoDB
             }
         }
 
-        public bool isTheEmailInTheDB(string userEmail)
+        public bool IsTheEmailInTheDB(string userEmail)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace CloudSite.Models.MoongoDB
             }
         }
 
-        public User getUserData(string userEmail)
+        public User GetUserData(string userEmail)
         {
             try
             {

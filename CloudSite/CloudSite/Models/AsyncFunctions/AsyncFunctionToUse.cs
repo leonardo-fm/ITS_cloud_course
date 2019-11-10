@@ -20,7 +20,7 @@ namespace CloudSite.Models.AsyncFunctions
     public class AsyncFunctionToUse
     {
         /*DA IMPLEMENTARE, SERVE UNA FUNZIONE IN JS CHE PERMETTA DI TIRARE UNA LISTA DELLE IMMAGINI SELEZIONATE E LE SPEDISCA AL SERVER*/
-        public static void removeImages(string userId ,List<string> listOfTheNamesOfPhotosToBeRemoveWithExtension)
+        public static void RemoveImages(string userId ,List<string> listOfTheNamesOfPhotosToBeRemoveWithExtension)
         {
             DBManager dbm = new DBManager();
             ConnectionBS cbs = new ConnectionBS(userId);
@@ -30,38 +30,38 @@ namespace CloudSite.Models.AsyncFunctions
             {
                 int indexOfPoint = nameWithExtesion.IndexOf('.');
                 photosNameNoExtension.Add(nameWithExtesion.Substring(0, indexOfPoint));
-                LogManager.writeOnLog("user " + userId + " have delited an image with name " + nameWithExtesion);
+                LogManager.WriteOnLog("user " + userId + " have delited an image with name " + nameWithExtesion);
             }
 
-            Task removeFromMongoDB = new Task(() => dbm.photoManager.removePhotos(photosNameNoExtension));
-            Task RemoveFromBlobStorage = new Task(() => cbs.userBSManager.removePhotoFromBlobStorage(listOfTheNamesOfPhotosToBeRemoveWithExtension));
+            Task removeFromMongoDB = new Task(() => dbm.photoManager.RemovePhotos(photosNameNoExtension));
+            Task RemoveFromBlobStorage = new Task(() => cbs.userBSManager.RemovePhotoFromBlobStorage(listOfTheNamesOfPhotosToBeRemoveWithExtension));
 
             removeFromMongoDB.Start();
             RemoveFromBlobStorage.Start();
         }
 
-        public static void sendMailForConvalidation(User user)
+        public static void SendMailForConvalidation(User user)
         {
             Task sendNewEmail = new Task(() =>
             {
                 DBManager dbm = new DBManager();
                 ConvalidationUser cu = new ConvalidationUser(user);
 
-                user.userPassword = cu.cryptUserPassword(user.userPassword);
+                user.userPassword = cu.CryptUserPassword(user.userPassword);
 
-                dbm.userManager.addUserToMongoDB(user);
+                dbm.userManager.AddUserToMongoDB(user);
 
                 DefaultBodyText df = new DefaultBodyText(user.userName, user._id);
-                string text = df.getNewBodyForEmailSubscription();
+                string text = df.GetNewBodyForEmailSubscription();
                 SendMail sm = new SendMail();
-                sm.sendNewEmail(user.userEmail, text);
+                sm.SendNewEmail(user.userEmail, text);
             });
 
             sendNewEmail.Start();
         }
 
         #region UploadPhoto
-        public static void uploadPhoto(HttpPostedFileBase file, string userId)
+        public static void UploadPhoto(HttpPostedFileBase file, string userId)
         {
             Photo userPhoto = new Photo();
             userPhoto.imageName = file.FileName;
@@ -84,15 +84,15 @@ namespace CloudSite.Models.AsyncFunctions
 
                 PropertyItem[] exifArray = Image.FromStream(photo).PropertyItems;
 
-                Task sendImageToComputerVisionAndBlobStorage = new Task(() => sendImageToCVandBS(userPhoto, photoForCV, photoForBS, userId, extension, exifArray));
+                Task sendImageToComputerVisionAndBlobStorage = new Task(() => SendImageToCVandBS(userPhoto, photoForCV, photoForBS, userId, extension, exifArray));
                 sendImageToComputerVisionAndBlobStorage.Start();
             }
         }
 
-        private static void sendImageToCVandBS(Photo userPhoto, Stream photoForCV, Stream photoForBS, string userId, string extension, PropertyItem[] exifArray)
+        private static void SendImageToCVandBS(Photo userPhoto, Stream photoForCV, Stream photoForBS, string userId, string extension, PropertyItem[] exifArray)
         {
-            Task<string[]> sendImageToComputerVision = new Task<string[]>(() => ComputerVisionConnection.uploadImageAndHandleTagsResoult(photoForCV));
-            Task uploadImageToBlobStorage = new Task(() => uploadPhotoToBlobStorage(userId, photoForBS, extension, ref userPhoto));
+            Task<string[]> sendImageToComputerVision = new Task<string[]>(() => ComputerVisionConnection.UploadImageAndHandleTagsResoult(photoForCV));
+            Task uploadImageToBlobStorage = new Task(() => UploadPhotoToBlobStorage(userId, photoForBS, extension, ref userPhoto));
 
             sendImageToComputerVision.Start();
             uploadImageToBlobStorage.Start();
@@ -101,13 +101,16 @@ namespace CloudSite.Models.AsyncFunctions
 
             userPhoto.tags = sendImageToComputerVision.Result;
             userPhoto._userId = userId;
+            userPhoto.photoTimeOfUpload = string.Format("{0}:{1}:{2} {3}:{4}:{5}",
+                DateTime.Now.Year, DateTime.Now.Month.ToString("d2"), DateTime.Now.Day.ToString("d2"),
+                DateTime.Now.Hour.ToString("d2"), DateTime.Now.Minute.ToString("d2"), DateTime.Now.Second.ToString("d2"));
 
             DBManager dbm = new DBManager();
 
             Dictionary<int, byte[]> exifDictionary = exifArray.ToDictionary(x => x.Id, x => x.Value != null ? x.Value : new byte[] { });
 
-            userPhoto.photoGpsLatitude = exifDictionary.ContainsKey(0x0002) ? getGPSValues(exifDictionary[0x0002]) : "";
-            userPhoto.photoGpsLongitude = exifDictionary.ContainsKey(0x0004) ? getGPSValues(exifDictionary[0x0004]) : "";
+            userPhoto.photoGpsLatitude = exifDictionary.ContainsKey(0x0002) ? GetGPSValues(exifDictionary[0x0002]) : "";
+            userPhoto.photoGpsLongitude = exifDictionary.ContainsKey(0x0004) ? GetGPSValues(exifDictionary[0x0004]) : "";
             userPhoto.photoTagDateTime = exifDictionary.ContainsKey(0x0132) ? Encoding.UTF8.GetString(exifDictionary[0x0132]).Replace("\0", "") : "";
             userPhoto.photoTagThumbnailEquipModel = exifDictionary.ContainsKey(0x010F) && exifDictionary.ContainsKey(0x0110) ?
                 Encoding.UTF8.GetString(exifDictionary[0x010F]).Replace("\0", "")
@@ -115,10 +118,10 @@ namespace CloudSite.Models.AsyncFunctions
             userPhoto.photoTagImageWidth = exifDictionary.ContainsKey(0x0100) ? BitConverter.ToInt16(exifDictionary[0x0100], 0).ToString() : "";
             userPhoto.photoTagImageHeight = exifDictionary.ContainsKey(0x0101) ? BitConverter.ToInt16(exifDictionary[0x0101], 0).ToString(): "";
 
-            dbm.photoManager.addPhotoToMongoDB(userPhoto);
+            dbm.photoManager.AddPhotoToMongoDB(userPhoto);
         }
 
-        private static string getGPSValues(byte[] value)
+        private static string GetGPSValues(byte[] value)
         {
             byte[] degrees1 = new byte[] { value[0], value[1], value[2], value[3] };
             byte[] degrees2 = new byte[] { value[4], value[5], value[6], value[7] };
@@ -136,14 +139,14 @@ namespace CloudSite.Models.AsyncFunctions
             return string.Format("{0}° {1}' {2}''", degrees, firsts, seconds);
         }
 
-        private static void uploadPhotoToBlobStorage(string userId, Stream photo, string extension, ref Photo userPhoto)
+        private static void UploadPhotoToBlobStorage(string userId, Stream photo, string extension, ref Photo userPhoto)
         {
             userPhoto._id = ObjectId.GenerateNewId();
             string photoName = userPhoto._id + extension;
             userPhoto.photoPhat = string.Format("https://{0}.blob.core.windows.net/{1}/{2}", Variables.ACCOUNT_NAME_FOR_BLOB_STORAGE, userId, photoName);
 
             ConnectionBS cbs = new ConnectionBS(userId);
-            cbs.userBSManager.addPhotoToUserContainer(photo, photoName);
+            cbs.userBSManager.AddPhotoToUserContainer(photo, photoName);
         }
         #endregion
     }

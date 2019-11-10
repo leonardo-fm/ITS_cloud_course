@@ -18,7 +18,7 @@ namespace CloudSite.Models.EmailSender
             _id = id.ToString();
         }
 
-        public string getNewBodyForEmailSubscription()
+        public string GetNewBodyForEmailSubscription()
         {
             string msg = "";
 

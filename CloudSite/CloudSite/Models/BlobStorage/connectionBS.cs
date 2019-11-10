@@ -13,18 +13,13 @@ namespace CloudSite.Models.BlobStorage
         public UserBlobStorageManager userBSManager { get; set; }
         private CloudBlobClient connection { get; set; }
 
-        public ConnectionBS() 
-        {
-            connectionToBlobStorage();
-            userBSManager = new UserBlobStorageManager(connection);
-        }
         public ConnectionBS(string userId)
         {
-            connectionToBlobStorage();
+            ConnectionToBlobStorage();
             userBSManager = new UserBlobStorageManager(connection, userId);
         }
 
-        private void connectionToBlobStorage()
+        private void ConnectionToBlobStorage()
         {
             string storageConnectionString = "DefaultEndpointsProtocol=https;"
                 + "AccountName=" + Variables.ACCOUNT_NAME_FOR_BLOB_STORAGE

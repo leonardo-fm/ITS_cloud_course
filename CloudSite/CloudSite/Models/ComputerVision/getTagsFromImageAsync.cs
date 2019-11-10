@@ -32,7 +32,7 @@ namespace CloudSite.Models.ComputerVision
             VisualFeatureTypes.Tags
         };
 
-        public static string[] uploadImageAndHandleTagsResoult(Stream photo, float recognizeLevel = 0.5f)
+        public static string[] UploadImageAndHandleTagsResoult(Stream photo, float recognizeLevel = 0.5f)
         {
             recognizeLevelPublic = recognizeLevel;
 

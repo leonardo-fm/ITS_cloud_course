@@ -12,7 +12,7 @@ namespace CloudSite.Models.EmailSender
     {
         public SendMail() { }
 
-        public void sendNewEmail(string userEmail, string bodyText)
+        public void SendNewEmail(string userEmail, string bodyText)
         {
             var fromAddress = new MailAddress(Variables.EMAIL_ADDRESS_FOR_SENDING_EMAILS, "Lo Fra");
             var toAddress = new MailAddress(userEmail);
@@ -30,11 +30,7 @@ namespace CloudSite.Models.EmailSender
                 Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
             };
 
-            using (var message = new MailMessage(fromAddress, toAddress)
-            {
-                Subject = subject,
-                Body = body
-            })
+            using (var message = new MailMessage(fromAddress, toAddress){ Subject = subject, Body = body })
             {
                 smtp.Send(message);
             }

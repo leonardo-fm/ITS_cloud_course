@@ -19,11 +19,11 @@ namespace CloudSite.Models.MoongoDB
 
         public DBManager()
         {
-            connectionToMongoDB();
+            ConnectionToMongoDB();
             photoManager = new PhotoManager(database);
             userManager = new UserManager(database);
         }
-        private void connectionToMongoDB()
+        private void ConnectionToMongoDB()
         {
             try
             {

@@ -20,7 +20,7 @@ namespace CloudSite
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             
             /*My Methods*/
-            Task whaitForCheckOrCreateLog = new Task(() => LogManager.createOrCheckIfExistFileLog());
+            Task whaitForCheckOrCreateLog = new Task(() => LogManager.CreateOrCheckIfExistFileLog());
             whaitForCheckOrCreateLog.Start();
             whaitForCheckOrCreateLog.Wait();
         }

@@ -23,33 +23,33 @@ namespace CloudSite.Models.ConvalidationUserAuth
 
         public bool isTheUserHaveValidParametres()
         {
-            if (isTheUserHaveValidUsername() &&
-                isTheUserHaveValidEmail() &&
-                isTheUserHaveValidPassword())
+            if (IsTheUserHaveValidUsername() &&
+                IsTheUserHaveValidEmail() &&
+                IsTheUserHaveValidPassword())
                 return true;
             else
                 return false;
         }
 
-        public bool isTheUserHaveValidUsername()
+        public bool IsTheUserHaveValidUsername()
         {
             string regUsername = @"^(?=[A-Za-z0-9])(?!.*[._()\[\]-]{2})[A-Za-z0-9._()\[\]-]{3,20}$";
             return Regex.IsMatch(_userName, regUsername);
         }
 
-        public bool isTheUserHaveValidPassword()
+        public bool IsTheUserHaveValidPassword()
         {
             string regPassword = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,15}$";
             return Regex.IsMatch(_userPassword, regPassword);
         }
 
-        public bool isTheUserHaveValidEmail()
+        public bool IsTheUserHaveValidEmail()
         {
             EmailAddressAttribute emailChecker = new EmailAddressAttribute();
             return emailChecker.IsValid(_userEmail);
         }
 
-        public string cryptUserPassword(string userPassword)
+        public string CryptUserPassword(string userPassword)
         {
             byte[] data = System.Text.Encoding.ASCII.GetBytes(userPassword);
             data = new SHA256Managed().ComputeHash(data);
@@ -58,9 +58,9 @@ namespace CloudSite.Models.ConvalidationUserAuth
             return hash;
         }
 
-        public bool checkPasswordIsTheSame(string passwordToCheck, string passwordDB)
+        public bool CheckPasswordIsTheSame(string passwordToCheck, string passwordDB)
         {
-            return cryptUserPassword(passwordToCheck) == passwordDB;
+            return CryptUserPassword(passwordToCheck) == passwordDB;
         }
     }
 }

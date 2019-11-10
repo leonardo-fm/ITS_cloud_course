@@ -31,19 +31,19 @@ namespace CloudSite.Controllers
         {
             DBManager dbm = new DBManager();
 
-            User user = dbm.userManager.getUserData(ufl.userEmailForLogin);
+            User user = dbm.userManager.GetUserData(ufl.userEmailForLogin);
             if (user == null || !user.confirmedEmail)
                 return View();
 
             ConvalidationUser cu = new ConvalidationUser(user);
 
-            if (cu.checkPasswordIsTheSame(ufl.userPasswordForLogin, user.userPassword))
+            if (cu.CheckPasswordIsTheSame(ufl.userPasswordForLogin, user.userPassword))
             {
                 Session.Add("user_id", user._id.ToString());
                 Session.Add("userEmail", user.userEmail);
                 Session.Add("userName", user.userName);
 
-                LogManager.writeOnLog("user " + user._id.ToString() + " is logged in");
+                LogManager.WriteOnLog("user " + user._id.ToString() + " is logged in");
 
                 return RedirectToAction("Home", "Home");
             }
@@ -65,14 +65,14 @@ namespace CloudSite.Controllers
             {
                 DBManager dbm = new DBManager();
 
-                if (dbm.userManager.isTheEmailInTheDB(user.userEmail))
+                if (dbm.userManager.IsTheEmailInTheDB(user.userEmail))
                     return View();
 
                 ConvalidationUser cu = new ConvalidationUser(user);
                 if (!cu.isTheUserHaveValidParametres())
                     return View();
 
-                AsyncFunctionToUse.sendMailForConvalidation(user);
+                AsyncFunctionToUse.SendMailForConvalidation(user);
 
                 return RedirectToAction("SendedEmail", "Auth");
             }
@@ -85,9 +85,9 @@ namespace CloudSite.Controllers
         {
             DBManager dbm = new DBManager();
 
-            if (userId != null && dbm.userManager.isTheUserInTheDB(userId))
+            if (userId != null && dbm.userManager.IsTheUserInTheDB(userId))
             {
-                dbm.userManager.confirmUserToMongoDB(userId);
+                dbm.userManager.ConfirmUserToMongoDB(userId);
                 return Content("Registrazione avvenuta");
             }
             else

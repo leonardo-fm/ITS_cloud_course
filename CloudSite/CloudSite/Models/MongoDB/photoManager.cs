@@ -15,7 +15,7 @@ namespace CloudSite.Models.MoongoDB
             photoCollection = database.GetCollection<Photo>(Variables.NAME_OF_TABLE_FOR_PHOTOS_IN_MONGODB);
         }
 
-        public void addPhotoToMongoDB(Photo photoToAdd)
+        public void AddPhotoToMongoDB(Photo photoToAdd)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace CloudSite.Models.MoongoDB
             }
         }
 
-        public List<Photo> getPhotoOfUser(string userId)
+        public List<Photo> GetPhotoOfUser(string userId)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace CloudSite.Models.MoongoDB
             }
         }
 
-        public List<Photo> getPhotoWithTag(string userId, string tag)
+        public List<Photo> GetPhotoWithTag(string userId, string tag)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace CloudSite.Models.MoongoDB
             }
         }
 
-        public void removePhotos(List<string> photoIdToRemoveWithNoExtension)
+        public void RemovePhotos(List<string> photoIdToRemoveWithNoExtension)
         {
             try
             {
