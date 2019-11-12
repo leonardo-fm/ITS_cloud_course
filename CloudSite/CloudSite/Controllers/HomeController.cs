@@ -22,8 +22,6 @@ namespace CloudSite.Controllers
         [HttpGet]
         public ActionResult Home()
         {
-            ConnectionBS cbs = new ConnectionBS((string)Session["user_id"]);
-
             return View();
         }
 
@@ -34,7 +32,7 @@ namespace CloudSite.Controllers
             string sasKey = cbs.userBSManager.GetContainerSasUri();
 
             DBManager dbm = new DBManager();
-            List<Photo> photos = dbm.photoManager.GetPhotoOfUser((string)Session["user_id"]);
+            List<Photo> photos = dbm.photoManager.GetPhotosOfUser((string)Session["user_id"]);
             List<string> imgLinks = new List<string>();
             foreach (Photo photo in photos)
             {
@@ -54,7 +52,7 @@ namespace CloudSite.Controllers
                 string sasKey = cbs.userBSManager.GetContainerSasUri();
 
                 DBManager dbm = new DBManager();
-                List<Photo> photos = dbm.photoManager.GetPhotoWithTag((string)Session["user_id"], tag);
+                List<Photo> photos = dbm.photoManager.GetPhotosWithTag((string)Session["user_id"], tag);
                 List<string> imgLinks = new List<string>();
                 foreach (Photo photo in photos)
                 {

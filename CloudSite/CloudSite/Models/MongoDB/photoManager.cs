@@ -17,53 +17,31 @@ namespace CloudSite.Models.MoongoDB
 
         public void AddPhotoToMongoDB(Photo photoToAdd)
         {
-            try
-            {
-                photoCollection.InsertOne(photoToAdd);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            photoCollection.InsertOne(photoToAdd);
         }
 
-        public List<Photo> GetPhotoOfUser(string userId)
+        public List<Photo> GetPhotosOfUser(string userId)
         {
-            try
-            {
-                return photoCollection.Find(x => x._userId == userId).ToList();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return photoCollection.Find(x => x._userId == userId).ToList();
         }
 
-        public List<Photo> GetPhotoWithTag(string userId, string tag)
+        public Photo GetPhotoForDetails(string userId, string photoName)
         {
-            try
-            {
-                return photoCollection.Find(x => x.tags.Any(y => y.Contains(tag)) && x._userId == userId).ToList();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            int indexOfPoint = photoName.IndexOf('.');
+            ObjectId photo_id = new ObjectId(photoName.Substring(0, indexOfPoint));
+            return photoCollection.Find(x => x._id == photo_id && x._userId == userId).First() as Photo;
+        }
+
+        public List<Photo> GetPhotosWithTag(string userId, string tag)
+        {
+            return photoCollection.Find(x => x.tags.Any(y => y.Contains(tag)) && x._userId == userId).ToList();
         }
 
         public void RemovePhotos(List<string> photoIdToRemoveWithNoExtension)
         {
-            try
+            foreach (string photoId in photoIdToRemoveWithNoExtension)
             {
-                foreach (string photoId in photoIdToRemoveWithNoExtension)
-                {
-                    photoCollection.FindOneAndDelete(x => x._id == new ObjectId(photoId));
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
+                photoCollection.FindOneAndDelete(x => x._id == new ObjectId(photoId));
             }
         }
     }

@@ -15,15 +15,8 @@ namespace CloudSite.Models.MoongoDB
 
         public void AddUserToMongoDB(User userToAdd)
         {
-            try
-            {
-                userToAdd._id = ObjectId.GenerateNewId();
-                userCollection.InsertOne(userToAdd);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            userToAdd._id = ObjectId.GenerateNewId();
+            userCollection.InsertOne(userToAdd);
         }
 
         public bool ConfirmUserToMongoDB(string userId)
@@ -32,74 +25,49 @@ namespace CloudSite.Models.MoongoDB
             {
                 ObjectId _id = new ObjectId(userId);
 
-                var userDB = userCollection.Find(x => x._id == _id).ToList();
-                User userGet = userDB[0];
+                User userDB = userCollection.Find(x => x._id == _id).First() as User;
 
-                if (userGet.confirmedEmail)
+                if (userDB == null || userDB.confirmedEmail)
                     return false;
 
-                userGet.confirmedEmail = true;
-                userCollection.ReplaceOneAsync(x => x._id == _id, userGet);
+                userDB.confirmedEmail = true;
+                userCollection.ReplaceOneAsync(x => x._id == _id, userDB);
                 return true;
             }
             catch (Exception)
             {
-                throw new Exception("User not found in the DB");
+                return false;
             }
         }
 
         public bool IsTheUserInTheDB(string userId)
         {
-            try
-            {
-                ObjectId _id = new ObjectId(userId);
-                var userDB = userCollection.Find(x => x._id == _id).ToList();
-                if (userDB.Count == 0)
-                    return false;
+            ObjectId _id = new ObjectId(userId);
+            var userDB = userCollection.Find(x => x._id == _id).ToList();
+            if (userDB.Count == 0)
+                return false;
 
-                return true;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            return true;
         }
 
         public bool IsTheEmailInTheDB(string userEmail)
         {
-            try
-            {
-                var userDB = userCollection.Find(x => x.userEmail == userEmail).ToList();
-                if (userDB.Count == 0)
-                    return false;
+            var userDB = userCollection.Find(x => x.userEmail == userEmail).ToList();
+            if (userDB.Count == 0)
+                return false;
 
-                return true;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            return true;
         }
 
         public User GetUserData(string userEmail)
         {
-            try
-            {
-                var userDB = userCollection.Find(x => x.userEmail == userEmail).ToList();
-                if (userDB.Count == 0)
-                    return null;
+            var userDB = userCollection.Find(x => x.userEmail == userEmail).ToList();
+            if (userDB.Count == 0)
+                return null;
 
-                User user = userDB[0];
+            User user = userDB[0];
 
-                return user;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            return user;
         }
     }
 }
