@@ -22,19 +22,21 @@ namespace CloudSite.Models.MoongoDB
 
         public List<Photo> GetPhotosOfUser(string userId)
         {
-            return photoCollection.Find(x => x._userId == userId).ToList();
+            List<Photo> userPhotos = photoCollection.Find(x => x._userId == userId).ToList();
+            return userPhotos.OrderBy(x => x.photoTimeOfUpload).Reverse().ToList();
         }
 
         public Photo GetPhotoForDetails(string userId, string photoName)
         {
             int indexOfPoint = photoName.IndexOf('.');
             ObjectId photo_id = new ObjectId(photoName.Substring(0, indexOfPoint));
-            return photoCollection.Find(x => x._id == photo_id && x._userId == userId).First() as Photo;
+            return photoCollection.Find(x => x._id == photo_id && x._userId == userId).FirstOrDefault() as Photo;
         }
 
         public List<Photo> GetPhotosWithTag(string userId, string tag)
         {
-            return photoCollection.Find(x => x.tags.Any(y => y.Contains(tag)) && x._userId == userId).ToList();
+            List<Photo> userPhotos = photoCollection.Find(x => x.tags.Any(y => y.Contains(tag)) && x._userId == userId).ToList();
+            return userPhotos.OrderBy(x => x.photoTimeOfUpload).Reverse().ToList();
         }
 
         public void RemovePhotos(List<string> photoIdToRemoveWithNoExtension)

@@ -109,8 +109,8 @@ namespace CloudSite.Models.AsyncFunctions
 
             Dictionary<int, byte[]> exifDictionary = exifArray.ToDictionary(x => x.Id, x => x.Value != null ? x.Value : new byte[] { });
 
-            userPhoto.photoGpsLatitude = exifDictionary.ContainsKey(0x0002) ? GetGPSValues(exifDictionary[0x0002]) : "";
-            userPhoto.photoGpsLongitude = exifDictionary.ContainsKey(0x0004) ? GetGPSValues(exifDictionary[0x0004]) : "";
+            userPhoto.photoGpsLatitude = exifDictionary.ContainsKey(0x0002) ? (double?)GetGPSValues(exifDictionary[0x0002]) : null;
+            userPhoto.photoGpsLongitude = exifDictionary.ContainsKey(0x0004) ? (double?)GetGPSValues(exifDictionary[0x0004]) : null;
             userPhoto.photoTagDateTime = exifDictionary.ContainsKey(0x0132) ? Encoding.UTF8.GetString(exifDictionary[0x0132]).Replace("\0", "") : "";
             userPhoto.photoTagThumbnailEquipModel = exifDictionary.ContainsKey(0x010F) && exifDictionary.ContainsKey(0x0110) ?
                 Encoding.UTF8.GetString(exifDictionary[0x010F]).Replace("\0", "")
@@ -121,7 +121,7 @@ namespace CloudSite.Models.AsyncFunctions
             dbm.photoManager.AddPhotoToMongoDB(userPhoto);
         }
 
-        private static string GetGPSValues(byte[] value)
+        private static double GetGPSValues(byte[] value)
         {
             byte[] degrees1 = new byte[] { value[0], value[1], value[2], value[3] };
             byte[] degrees2 = new byte[] { value[4], value[5], value[6], value[7] };
@@ -136,7 +136,7 @@ namespace CloudSite.Models.AsyncFunctions
             double firsts = (double)BitConverter.ToInt32(first1, 0) / BitConverter.ToInt32(first2, 0);
             double seconds = (double)BitConverter.ToInt32(second1, 0) / BitConverter.ToInt32(second2, 0);
 
-            return string.Format("{0}° {1}' {2}''", degrees, firsts, seconds);
+            return Math.Round(degrees + (firsts / 60) + (seconds / 3600), 5);
         }
 
         private static void UploadPhotoToBlobStorage(string userId, Stream photo, string extension, ref Photo userPhoto)

@@ -25,7 +25,7 @@ namespace CloudSite.Models.MoongoDB
             {
                 ObjectId _id = new ObjectId(userId);
 
-                User userDB = userCollection.Find(x => x._id == _id).First() as User;
+                User userDB = userCollection.Find(x => x._id == _id).FirstOrDefault() as User;
 
                 if (userDB == null || userDB.confirmedEmail)
                     return false;

@@ -41,7 +41,7 @@ namespace CloudSite.Models.MoongoDB
             }
             catch (Exception)
             {
-                throw;
+                throw new ArgumentException("Connection faild, wrong parameters", "MongoDBNotAbleToConnect");
             }
         }
     }

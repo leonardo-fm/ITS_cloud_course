@@ -17,10 +17,10 @@ namespace CloudSite.Models
         #region EXIF Variables
 
         // 0x0002
-        public string photoGpsLatitude { get; set; }
+        public double? photoGpsLatitude { get; set; }
 
         // 0x0004
-        public string photoGpsLongitude { get; set; }
+        public double? photoGpsLongitude { get; set; }
 
         // 0x0132
         public string photoTagDateTime { get; set; }

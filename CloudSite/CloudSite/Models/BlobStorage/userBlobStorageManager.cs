@@ -36,35 +36,24 @@ namespace CloudSite.Models.BlobStorage
         {
             foreach (string name in photosName)
             {
-                try
-                {
-                    var blobToDelete = userContainer.GetBlockBlobReference(name);
-                    blobToDelete.DeleteIfExists();
-                }
-                catch (Exception)
-                {
-
-                    throw;
-                }
+                var blobToDelete = userContainer.GetBlockBlobReference(name);
+                blobToDelete.DeleteIfExists();
             }
         }
 
         public void AddPhotoToUserContainer(Stream photo, string photoName)
         {
-            if (userContainer == null)
-                throw new ArgumentException("Container is note define", "NullContainer");
-            else if (userContainer.Name != _userId)
-                throw new ArgumentException("Container don't mach the user", "NoMatchBetweenContainerAndUser");
-
             CloudBlockBlob cBlob = userContainer.GetBlockBlobReference(photoName);
             
             cBlob.UploadFromStream(photo);
-            photo.Close();
         }
 
         // References: https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-service-sas-create-dotnet
         public string GetContainerSasUri(int minutesToAdd = 1)
         {
+            if (minutesToAdd <= 0)
+                minutesToAdd = 1;
+
             string sasContainerToken;
             int timeDifferencesInMinutes = (DateTime.Now.Hour - DateTime.UtcNow.Hour) * 60;
 
