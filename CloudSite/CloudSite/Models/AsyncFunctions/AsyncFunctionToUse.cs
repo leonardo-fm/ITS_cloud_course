@@ -64,6 +64,7 @@ namespace CloudSite.Models.AsyncFunctions
         public static void UploadPhoto(HttpPostedFileBase file, string userId)
         {
             Photo userPhoto = new Photo();
+
             userPhoto.imageName = file.FileName;
 
             string extension = file.FileName.Substring(file.FileName.IndexOf('.'));

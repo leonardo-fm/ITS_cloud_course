@@ -42,12 +42,19 @@ namespace CloudSite.Models.MoongoDB
 
         public bool IsTheUserInTheDB(string userId)
         {
-            ObjectId _id = new ObjectId(userId);
-            var userDB = userCollection.Find(x => x._id == _id).ToList();
-            if (userDB.Count == 0)
-                return false;
+            try
+            {
+                ObjectId _id = new ObjectId(userId);
+                var userDB = userCollection.Find(x => x._id == _id).ToList();
+                if (userDB.Count == 0)
+                    return false;
 
-            return true;
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public bool IsTheEmailInTheDB(string userEmail)
