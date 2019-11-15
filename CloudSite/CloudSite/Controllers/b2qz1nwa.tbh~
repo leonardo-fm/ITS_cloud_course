@@ -1,0 +1,38 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+using CloudSite.Models;
+using CloudSite.Models.ComputerVision;
+
+namespace CloudSite.Controllers
+{
+    public class HomeController : Controller
+    {
+        public ActionResult Home()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Upload(HttpPostedFileBase file)
+        {
+            if (file.ContentLength > 0)
+            {
+                var photo = file.InputStream;
+                var tags = ComputerVisionConnection.getTagsFromImage(photo);
+                string res = "";
+                foreach (string tag in tags)
+                {
+                    res += tag + " | ";
+                }
+                return Content(res);
+            }
+
+            return View();
+        }
+    }
+}
