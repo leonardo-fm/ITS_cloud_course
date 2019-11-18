@@ -180,9 +180,9 @@ namespace Login.Controllers
             var verifyUrl = "/User/VerifyAccount/" + activationCode;
             var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
 
-            var fromEmail = new MailAddress("sameeranihathe@gmail.com", "sameera sampath");
+            var fromEmail = new MailAddress("lorenzo.bert@edu.itspiemonte.it", "lorenzo bert");
             var toEmail = new MailAddress(emailID);
-            var fromemailPassword = "kanchana143";
+            var fromemailPassword = "prova123";
             string subject = "Your account is successfully created";
 
             string body = "<br/> <br/> Your account is successfully created. Please click the below link to verify the account" +
