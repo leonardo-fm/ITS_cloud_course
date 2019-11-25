@@ -7,10 +7,10 @@ namespace CloudSite.Models.BlobStorage
 {
     class UserBlobStorageManager
     {
+        public CloudBlobContainer UserContainer;
+
         private string _userId;
         private CloudBlobClient _connection;
-
-        public CloudBlobContainer userContainer;
 
         public UserBlobStorageManager(CloudBlobClient connection, string userId)
         {
@@ -28,22 +28,22 @@ namespace CloudSite.Models.BlobStorage
 
         private void SelectConteinerUser()
         {
-            userContainer = _connection.GetContainerReference(_userId);
-            userContainer.CreateIfNotExistsAsync().Wait();
+            UserContainer = _connection.GetContainerReference(_userId);
+            UserContainer.CreateIfNotExistsAsync().Wait();
         }
 
         public void RemovePhotoFromBlobStorage(List<string> photosName)
         {
             foreach (string name in photosName)
             {
-                var blobToDelete = userContainer.GetBlockBlobReference(name);
+                var blobToDelete = UserContainer.GetBlockBlobReference(name);
                 blobToDelete.DeleteIfExists();
             }
         }
 
         public void AddPhotoToUserContainer(Stream photo, string photoName)
         {
-            CloudBlockBlob cBlob = userContainer.GetBlockBlobReference(photoName);
+            CloudBlockBlob cBlob = UserContainer.GetBlockBlobReference(photoName);
             
             cBlob.UploadFromStream(photo);
         }
@@ -63,7 +63,7 @@ namespace CloudSite.Models.BlobStorage
                 Permissions = SharedAccessBlobPermissions.Read
             };
 
-            sasContainerToken = userContainer.GetSharedAccessSignature(adHocPolicy, null);
+            sasContainerToken = UserContainer.GetSharedAccessSignature(adHocPolicy, null);
             
             return sasContainerToken;
         }

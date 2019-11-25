@@ -8,42 +8,42 @@ namespace CloudSite.Models.MoongoDB
 {
     class PhotoManager
     {
-        private IMongoCollection<Photo> photoCollection;
+        private IMongoCollection<Photo> _photoCollection;
 
         public PhotoManager(IMongoDatabase database)
         {
-            photoCollection = database.GetCollection<Photo>(Variables.NAME_OF_TABLE_FOR_PHOTOS_IN_MONGODB);
+            _photoCollection = database.GetCollection<Photo>(Variables.NAME_OF_TABLE_FOR_PHOTOS_IN_MONGODB);
         }
 
         public void AddPhotoToMongoDB(Photo photoToAdd)
         {
-            photoCollection.InsertOne(photoToAdd);
+            _photoCollection.InsertOne(photoToAdd);
         }
 
         public List<Photo> GetPhotosOfUser(string userId)
         {
-            List<Photo> userPhotos = photoCollection.Find(x => x._userId == userId).ToList();
-            return userPhotos.OrderBy(x => x.photoTimeOfUpload).Reverse().ToList();
+            List<Photo> userPhotos = _photoCollection.Find(x => x.UserId == userId).ToList();
+            return userPhotos.OrderBy(x => x.PhotoTimeOfUpload).Reverse().ToList();
         }
 
         public Photo GetPhotoForDetails(string userId, string photoName)
         {
             int indexOfPoint = photoName.IndexOf('.');
             ObjectId photo_id = new ObjectId(photoName.Substring(0, indexOfPoint));
-            return photoCollection.Find(x => x._id == photo_id && x._userId == userId).FirstOrDefault() as Photo;
+            return _photoCollection.Find(x => x._id == photo_id && x.UserId == userId).FirstOrDefault() as Photo;
         }
 
         public List<Photo> GetPhotosWithTag(string userId, string tag)
         {
-            List<Photo> userPhotos = photoCollection.Find(x => x.tags.Any(y => y.Contains(tag)) && x._userId == userId).ToList();
-            return userPhotos.OrderBy(x => x.photoTimeOfUpload).Reverse().ToList();
+            List<Photo> userPhotos = _photoCollection.Find(x => x.Tags.Any(y => y.Contains(tag)) && x.UserId == userId).ToList();
+            return userPhotos.OrderBy(x => x.PhotoTimeOfUpload).Reverse().ToList();
         }
 
         public void RemovePhotos(List<string> photoIdToRemoveWithNoExtension)
         {
             foreach (string photoId in photoIdToRemoveWithNoExtension)
             {
-                photoCollection.FindOneAndDelete(x => x._id == new ObjectId(photoId));
+                _photoCollection.FindOneAndDelete(x => x._id == new ObjectId(photoId));
             }
         }
     }

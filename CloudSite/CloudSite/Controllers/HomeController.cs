@@ -29,18 +29,16 @@ namespace CloudSite.Controllers
         public ActionResult Gallery()
         {
             ConnectionBS cbs = new ConnectionBS((string)Session["user_id"]);
-            string sasKey = cbs.userBSManager.GetContainerSasUri();
+            string sasKey = cbs.UserBSManager.GetContainerSasUri();
 
             DBManager dbm = new DBManager();
-            List<Photo> photos = dbm.photoManager.GetPhotosOfUser((string)Session["user_id"]);
+            List<Photo> photos = dbm.PhotoManager.GetPhotosOfUser((string)Session["user_id"]);
             List<string> imgLinks = new List<string>();
             foreach (Photo photo in photos)
             {
-                imgLinks.Add(photo.photoPhat + sasKey);
+                imgLinks.Add(photo.PhotoPhat + sasKey);
             }
-
-            ViewBag.images = imgLinks;
-            return View();
+            return View(new ImageLinks { ImgLinks = imgLinks });
         }
 
         [HttpPost]
@@ -49,18 +47,17 @@ namespace CloudSite.Controllers
             if (!string.IsNullOrEmpty(tag) && !string.IsNullOrWhiteSpace(tag))
             {
                 ConnectionBS cbs = new ConnectionBS((string)Session["user_id"]);
-                string sasKey = cbs.userBSManager.GetContainerSasUri();
+                string sasKey = cbs.UserBSManager.GetContainerSasUri();
 
                 DBManager dbm = new DBManager();
-                List<Photo> photos = dbm.photoManager.GetPhotosWithTag((string)Session["user_id"], tag);
+                List<Photo> photos = dbm.PhotoManager.GetPhotosWithTag((string)Session["user_id"], tag);
                 List<string> imgLinks = new List<string>();
                 foreach (Photo photo in photos)
                 {
-                    imgLinks.Add(photo.photoPhat + sasKey);
+                    imgLinks.Add(photo.PhotoPhat + sasKey);
                 }
 
-                ViewBag.images = imgLinks;
-                return View();
+                return View(new ImageLinks { ImgLinks = imgLinks });
             }
 
             return RedirectToAction("Gallery", "Home");
@@ -69,7 +66,7 @@ namespace CloudSite.Controllers
         [HttpPost]
         public ActionResult Upload(HttpPostedFileBase file)
         {
-            if (file != null && file.ContentType.StartsWith("image/"))
+            if (file != null && file.ContentType.Contains("image"))
             {
                 LogManager.WriteOnLog("user " + (string)Session["user_id"] + " uploaded an image with name " + file.FileName);
 

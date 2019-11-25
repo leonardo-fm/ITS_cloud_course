@@ -1,4 +1,6 @@
-﻿
+﻿@using CloudSite.Models
+@model ImageLinks
+
 @{
     Layout = null;
 }
@@ -7,14 +9,14 @@
 
 <div>
     <div>
-        @using (Html.BeginForm("GalleryTag", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        @using (Html.BeginForm("GalleryTag", "Home", FormMethod.Post))
         {
-            <input type="text" name="tag" id="tag" /><br><br>
+            <input type="text" name="Tag"/><br><br>
             <input type="submit" value="Search tag" />
             <br><br>
         }
     </div>
-    @foreach (string link in ViewBag.images)
+    @foreach (string link in Model.ImgLinks)
     {
         <p>
             <img src="@link" />

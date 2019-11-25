@@ -10,14 +10,14 @@ namespace CloudSite.Models
         public ObjectId _id { get; set; }
 
         [Required]
-        public string userName{ get; set; }
+        public string UserName{ get; set; }
 
         [Required]
-        public string userEmail { get; set; }
+        public string UserEmail { get; set; }
 
         [Required]
-        public string userPassword { get; set; }
+        public string UserPassword { get; set; }
 
-        public bool confirmedEmail { get; set; }
+        public bool ConfirmedEmail { get; set; }
     }
 }

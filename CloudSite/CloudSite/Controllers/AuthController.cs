@@ -31,17 +31,17 @@ namespace CloudSite.Controllers
         {
             DBManager dbm = new DBManager();
 
-            User user = dbm.userManager.GetUserData(ufl.userEmailForLogin);
-            if (user == null || !user.confirmedEmail)
+            User user = dbm.UserManager.GetUserData(ufl.UserEmailForLogin);
+            if (user == null || !user.ConfirmedEmail)
                 return View();
 
             ConvalidationUser cu = new ConvalidationUser(user);
 
-            if (cu.CheckPasswordIsTheSame(ufl.userPasswordForLogin, user.userPassword))
+            if (cu.CheckPasswordIsTheSame(ufl.UserPasswordForLogin, user.UserPassword))
             {
                 Session.Add("user_id", user._id.ToString());
-                Session.Add("userEmail", user.userEmail);
-                Session.Add("userName", user.userName);
+                Session.Add("userEmail", user.UserEmail);
+                Session.Add("userName", user.UserName);
 
                 LogManager.WriteOnLog("user " + user._id.ToString() + " is logged in");
 
@@ -65,7 +65,7 @@ namespace CloudSite.Controllers
             {
                 DBManager dbm = new DBManager();
 
-                if (dbm.userManager.IsTheEmailInTheDB(user.userEmail))
+                if (dbm.UserManager.IsTheEmailInTheDB(user.UserEmail))
                     return View();
 
                 ConvalidationUser cu = new ConvalidationUser(user);
@@ -85,9 +85,9 @@ namespace CloudSite.Controllers
         {
             DBManager dbm = new DBManager();
 
-            if (userId != null && dbm.userManager.IsTheUserInTheDB(userId))
+            if (userId != null && dbm.UserManager.IsTheUserInTheDB(userId))
             {
-                dbm.userManager.ConfirmUserToMongoDB(userId);
+                dbm.UserManager.ConfirmUserToMongoDB(userId);
                 return Content("Registrazione avvenuta");
             }
             else
