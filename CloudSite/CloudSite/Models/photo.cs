@@ -1,0 +1,39 @@
+﻿using System;
+using MongoDB.Bson;
+using System.Collections.Generic;
+
+namespace CloudSite.Models
+{
+    public class Photo
+    {
+        public ObjectId _id { get; set; }
+        public string imageName { get; set; }
+        public string _userId { get; set; }
+        public string[] tags { get; set; }
+        public string photoPhat { get; set; }
+        public string photoTimeOfUpload { get; set; }
+
+
+        #region EXIF Variables
+
+        // 0x0002
+        public double? photoGpsLatitude { get; set; }
+
+        // 0x0004
+        public double? photoGpsLongitude { get; set; }
+
+        // 0x0132
+        public string photoTagDateTime { get; set; }
+
+        // 0x0100
+        public string photoTagImageWidth { get; set; }
+
+        // 0x0101
+        public string photoTagImageHeight { get; set; } 
+
+        // 0x110
+        public string photoTagThumbnailEquipModel { get; set; }
+
+        #endregion
+    }
+}
