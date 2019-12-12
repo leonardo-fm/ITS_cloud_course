@@ -16,9 +16,9 @@ namespace CloudSite.Models.ConvalidationUserAuth
 
         public ConvalidationUser(User user)
         {
-            _userName = user.userName;
-            _userEmail = user.userEmail;
-            _userPassword = user.userPassword;
+            _userName = user.UserName;
+            _userEmail = user.UserEmail;
+            _userPassword = user.UserPassword;
         }
 
         public bool isTheUserHaveValidParametres()

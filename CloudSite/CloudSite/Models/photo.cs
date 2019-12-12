@@ -7,11 +7,11 @@ namespace CloudSite.Models
     public class Photo
     {
         public ObjectId _id { get; set; }
-        public string imageName { get; set; }
-        public string _userId { get; set; }
-        public string[] tags { get; set; }
-        public string photoPhat { get; set; }
-        public string photoTimeOfUpload { get; set; }
+        public string ImageName { get; set; }
+        public string UserId { get; set; }
+        public string[] Tags { get; set; }
+        public string PhotoPhat { get; set; }
+        public string PhotoTimeOfUpload { get; set; }
 
 
         #region EXIF Variables

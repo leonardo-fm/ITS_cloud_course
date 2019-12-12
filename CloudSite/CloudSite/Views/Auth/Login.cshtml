@@ -12,13 +12,14 @@
 </head>
 <body>
     <div>
-        <form method="post">
-            Email:<br>
-            <input type="text" name="userEmailForLogin"><br><br>
-            Password:<br>
-            <input type="password" name="userPasswordForLogin"><br><br>
+        @using (Html.BeginForm("Login", "Auth", FormMethod.Post))
+        {
+            <p>Email:<br></p>
+            <input type="text" name="UserEmailForLogin"><br><br>
+            <p>Password:<br></p>
+            <input type="password" name="UserPasswordForLogin"><br><br>
             <input type="submit" value="Submit" class="submit">
-        </form>
-    </div>
+        }
+        </div>
 </body>
 </html>

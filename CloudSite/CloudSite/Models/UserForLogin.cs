@@ -9,9 +9,9 @@ namespace CloudSite.Models
     public class UserForLogin
     {
         [Required]
-        public string userEmailForLogin { get; set; }
+        public string UserEmailForLogin { get; set; }
 
         [Required]
-        public string userPasswordForLogin { get; set; }
+        public string UserPasswordForLogin { get; set; }
     }
 }

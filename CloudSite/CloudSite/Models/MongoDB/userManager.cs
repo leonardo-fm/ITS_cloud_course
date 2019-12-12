@@ -7,16 +7,16 @@ namespace CloudSite.Models.MoongoDB
 {
     class UserManager
     {
-        private IMongoCollection<User> userCollection;
+        private IMongoCollection<User> _userCollection;
         public UserManager(IMongoDatabase database)
         {
-            userCollection = database.GetCollection<User>(Variables.NAME_OF_TABLE_FOR_USERS_IN_MONGODB);
+            _userCollection = database.GetCollection<User>(Variables.NAME_OF_TABLE_FOR_USERS_IN_MONGODB);
         }
 
         public void AddUserToMongoDB(User userToAdd)
         {
             userToAdd._id = ObjectId.GenerateNewId();
-            userCollection.InsertOne(userToAdd);
+            _userCollection.InsertOne(userToAdd);
         }
 
         public bool ConfirmUserToMongoDB(string userId)
@@ -25,13 +25,13 @@ namespace CloudSite.Models.MoongoDB
             {
                 ObjectId _id = new ObjectId(userId);
 
-                User userDB = userCollection.Find(x => x._id == _id).FirstOrDefault() as User;
+                User userDB = _userCollection.Find(x => x._id == _id).FirstOrDefault() as User;
 
-                if (userDB == null || userDB.confirmedEmail)
+                if (userDB == null || userDB.ConfirmedEmail)
                     return false;
 
-                userDB.confirmedEmail = true;
-                userCollection.ReplaceOneAsync(x => x._id == _id, userDB);
+                userDB.ConfirmedEmail = true;
+                _userCollection.ReplaceOneAsync(x => x._id == _id, userDB);
                 return true;
             }
             catch (Exception)
@@ -45,7 +45,7 @@ namespace CloudSite.Models.MoongoDB
             try
             {
                 ObjectId _id = new ObjectId(userId);
-                var userDB = userCollection.Find(x => x._id == _id).ToList();
+                var userDB = _userCollection.Find(x => x._id == _id).ToList();
                 if (userDB.Count == 0)
                     return false;
 
@@ -59,7 +59,7 @@ namespace CloudSite.Models.MoongoDB
 
         public bool IsTheEmailInTheDB(string userEmail)
         {
-            var userDB = userCollection.Find(x => x.userEmail == userEmail).ToList();
+            var userDB = _userCollection.Find(x => x.UserEmail == userEmail).ToList();
             if (userDB.Count == 0)
                 return false;
 
@@ -68,7 +68,7 @@ namespace CloudSite.Models.MoongoDB
 
         public User GetUserData(string userEmail)
         {
-            var userDB = userCollection.Find(x => x.userEmail == userEmail).ToList();
+            var userDB = _userCollection.Find(x => x.UserEmail == userEmail).ToList();
             if (userDB.Count == 0)
                 return null;
 

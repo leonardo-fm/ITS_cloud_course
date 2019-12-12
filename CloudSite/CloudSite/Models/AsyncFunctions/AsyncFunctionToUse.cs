@@ -33,8 +33,8 @@ namespace CloudSite.Models.AsyncFunctions
                 LogManager.WriteOnLog("user " + userId + " have delited an image with name " + nameWithExtesion);
             }
 
-            Task removeFromMongoDB = new Task(() => dbm.photoManager.RemovePhotos(photosNameNoExtension));
-            Task RemoveFromBlobStorage = new Task(() => cbs.userBSManager.RemovePhotoFromBlobStorage(listOfTheNamesOfPhotosToBeRemoveWithExtension));
+            Task removeFromMongoDB = new Task(() => dbm.PhotoManager.RemovePhotos(photosNameNoExtension));
+            Task RemoveFromBlobStorage = new Task(() => cbs.UserBSManager.RemovePhotoFromBlobStorage(listOfTheNamesOfPhotosToBeRemoveWithExtension));
 
             removeFromMongoDB.Start();
             RemoveFromBlobStorage.Start();
@@ -47,14 +47,14 @@ namespace CloudSite.Models.AsyncFunctions
                 DBManager dbm = new DBManager();
                 ConvalidationUser cu = new ConvalidationUser(user);
 
-                user.userPassword = cu.CryptUserPassword(user.userPassword);
+                user.UserPassword = cu.CryptUserPassword(user.UserPassword);
 
-                dbm.userManager.AddUserToMongoDB(user);
+                dbm.UserManager.AddUserToMongoDB(user);
 
-                DefaultBodyText df = new DefaultBodyText(user.userName, user._id);
+                DefaultBodyText df = new DefaultBodyText(user.UserName, user._id);
                 string text = df.GetNewBodyForEmailSubscription();
                 SendMail sm = new SendMail();
-                sm.SendNewEmail(user.userEmail, text);
+                sm.SendNewEmail(user.UserEmail, text);
             });
 
             sendNewEmail.Start();
@@ -65,7 +65,7 @@ namespace CloudSite.Models.AsyncFunctions
         {
             Photo userPhoto = new Photo();
 
-            userPhoto.imageName = file.FileName;
+            userPhoto.ImageName = file.FileName;
 
             string extension = file.FileName.Substring(file.FileName.IndexOf('.'));
 
@@ -100,9 +100,9 @@ namespace CloudSite.Models.AsyncFunctions
 
             Task.WhenAll(sendImageToComputerVision, uploadImageToBlobStorage).Wait();
 
-            userPhoto.tags = sendImageToComputerVision.Result;
-            userPhoto._userId = userId;
-            userPhoto.photoTimeOfUpload = string.Format("{0}:{1}:{2} {3}:{4}:{5}",
+            userPhoto.Tags = sendImageToComputerVision.Result;
+            userPhoto.UserId = userId;
+            userPhoto.PhotoTimeOfUpload = string.Format("{0}:{1}:{2} {3}:{4}:{5}",
                 DateTime.Now.Year, DateTime.Now.Month.ToString("d2"), DateTime.Now.Day.ToString("d2"),
                 DateTime.Now.Hour.ToString("d2"), DateTime.Now.Minute.ToString("d2"), DateTime.Now.Second.ToString("d2"));
 
@@ -119,7 +119,7 @@ namespace CloudSite.Models.AsyncFunctions
             userPhoto.photoTagImageWidth = exifDictionary.ContainsKey(0x0100) ? BitConverter.ToInt16(exifDictionary[0x0100], 0).ToString() : "";
             userPhoto.photoTagImageHeight = exifDictionary.ContainsKey(0x0101) ? BitConverter.ToInt16(exifDictionary[0x0101], 0).ToString(): "";
 
-            dbm.photoManager.AddPhotoToMongoDB(userPhoto);
+            dbm.PhotoManager.AddPhotoToMongoDB(userPhoto);
         }
 
         private static double GetGPSValues(byte[] value)
@@ -144,10 +144,10 @@ namespace CloudSite.Models.AsyncFunctions
         {
             userPhoto._id = ObjectId.GenerateNewId();
             string photoName = userPhoto._id + extension;
-            userPhoto.photoPhat = string.Format("https://{0}.blob.core.windows.net/{1}/{2}", Variables.ACCOUNT_NAME_FOR_BLOB_STORAGE, userId, photoName);
+            userPhoto.PhotoPhat = string.Format("https://{0}.blob.core.windows.net/{1}/{2}", Variables.ACCOUNT_NAME_FOR_BLOB_STORAGE, userId, photoName);
 
             ConnectionBS cbs = new ConnectionBS(userId);
-            cbs.userBSManager.AddPhotoToUserContainer(photo, photoName);
+            cbs.UserBSManager.AddPhotoToUserContainer(photo, photoName);
         }
         #endregion
     }

@@ -10,13 +10,13 @@ namespace CloudSite.Models.BlobStorage
 {
     class ConnectionBS
     {
-        public UserBlobStorageManager userBSManager { get; set; }
-        private CloudBlobClient connection { get; set; }
+        public UserBlobStorageManager UserBSManager { get; set; }
+        private CloudBlobClient _connection { get; set; }
 
         public ConnectionBS(string userId)
         {
             ConnectionToBlobStorage();
-            userBSManager = new UserBlobStorageManager(connection, userId);
+            UserBSManager = new UserBlobStorageManager(_connection, userId);
         }
 
         private void ConnectionToBlobStorage()
@@ -24,10 +24,10 @@ namespace CloudSite.Models.BlobStorage
             string storageConnectionString = "DefaultEndpointsProtocol=https;"
                 + "AccountName=" + Variables.ACCOUNT_NAME_FOR_BLOB_STORAGE
                 + ";AccountKey=" + Variables.SUBSCRIPTION_KEY_FOR_BLOB_STORAGE
-                + ";EndpointSuffix=" + Variables.ENDPOINT_FOR_BLOB_STORAGE;
+                + ";EndpointSuffix=" + Variables.ENDPOINT_SUFFIX_FOR_BLOB_STORAGE;
 
             CloudStorageAccount account = CloudStorageAccount.Parse(storageConnectionString);
-            connection = account.CreateCloudBlobClient();
+            _connection = account.CreateCloudBlobClient();
         }
     }
 }

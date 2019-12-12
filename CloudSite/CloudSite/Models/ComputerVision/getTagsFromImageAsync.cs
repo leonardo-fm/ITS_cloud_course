@@ -14,7 +14,7 @@ namespace CloudSite.Models.ComputerVision
     class ComputerVisionConnection
     {
         private static float _recognizeLevel;
-        private static float recognizeLevelPublic
+        private static float RecognizeLevelPublic
         {
             get { return _recognizeLevel; }
             set { if (value > 1f || value < 0f)
@@ -25,7 +25,7 @@ namespace CloudSite.Models.ComputerVision
         }
 
         // Specify the features to return  
-        private static readonly List<VisualFeatureTypes> features =
+        private static readonly List<VisualFeatureTypes> _features =
             new List<VisualFeatureTypes>()
         {
             VisualFeatureTypes.Description,
@@ -34,7 +34,7 @@ namespace CloudSite.Models.ComputerVision
 
         public static string[] UploadImageAndHandleTagsResoult(Stream photo, float recognizeLevel = 0.5f)
         {
-            recognizeLevelPublic = recognizeLevel;
+            RecognizeLevelPublic = recognizeLevel;
 
             ComputerVisionClient computerVision = new ComputerVisionClient(
                 new ApiKeyServiceClientCredentials(Variables.SUBSCRIPTION_KEY_FOR_AI_VISION),
@@ -51,7 +51,7 @@ namespace CloudSite.Models.ComputerVision
         // Analyze a local image  
         private static async Task<string[]> AnalyzeLocalAsync(ComputerVisionClient computerVision, Stream photo)
         {
-            ImageAnalysis analysis = await computerVision.AnalyzeImageInStreamAsync(photo, features);
+            ImageAnalysis analysis = await computerVision.AnalyzeImageInStreamAsync(photo, _features);
             return DisplayResults(analysis);
         }
 
