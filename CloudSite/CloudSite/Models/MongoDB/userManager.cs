@@ -31,7 +31,7 @@ namespace CloudSite.Models.MoongoDB
                     return false;
 
                 userDB.ConfirmedEmail = true;
-                _userCollection.ReplaceOneAsync(x => x._id == _id, userDB);
+                _userCollection.ReplaceOne(x => x._id == _id, userDB);
                 return true;
             }
             catch (Exception)
@@ -45,8 +45,8 @@ namespace CloudSite.Models.MoongoDB
             try
             {
                 ObjectId _id = new ObjectId(userId);
-                var userDB = _userCollection.Find(x => x._id == _id).ToList();
-                if (userDB.Count == 0)
+                var userDB = _userCollection.Find(x => x._id == _id).FirstOrDefault();
+                if (userDB == null)
                     return false;
 
                 return true;
@@ -59,8 +59,8 @@ namespace CloudSite.Models.MoongoDB
 
         public bool IsTheEmailInTheDB(string userEmail)
         {
-            var userDB = _userCollection.Find(x => x.UserEmail == userEmail).ToList();
-            if (userDB.Count == 0)
+            var userDB = _userCollection.Find(x => x.UserEmail == userEmail).FirstOrDefault();
+            if (userDB == null)
                 return false;
 
             return true;
@@ -68,13 +68,11 @@ namespace CloudSite.Models.MoongoDB
 
         public User GetUserData(string userEmail)
         {
-            var userDB = _userCollection.Find(x => x.UserEmail == userEmail).ToList();
-            if (userDB.Count == 0)
+            var userDB = _userCollection.Find(x => x.UserEmail == userEmail).FirstOrDefault();
+            if (userDB == null)
                 return null;
 
-            User user = userDB[0];
-
-            return user;
+            return userDB;
         }
     }
 }
