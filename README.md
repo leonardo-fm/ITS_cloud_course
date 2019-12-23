@@ -1,22 +1,46 @@
-# Progetto per corso di cloud
+# [Final project for the cloud course](https://github.com/GlobalBlackout/ProgettoCloud)
 
-Setup MongoDB (https://docs.mongodb.com/manual/reference/command/)
+## Requirements
 
-	- Create DB
-	- Create 2 Collections, the first for the photos and second one for the useres
-	- Create a dedicate user for the dib with credentals
+- [MongoDB](https://docs.mongodb.com)
+- [IIS](https://www.microsoft.com/en-us/download/details.aspx?id=48264)
+- [Gmail Account](https://accounts.google.com/signup/v2/webcreateaccount?flowName=GlifWebSignIn&flowEntry=SignUp) for sending emails
+- [Azure account](https://azure.microsoft.com/en-us/)
+- [Azure Computer Vision](https://azure.microsoft.com/en-us/services/cognitive-services/computer-vision/)
+- [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
 
-Setup Project
+## Setup [MongoDB](https://docs.mongodb.com)
 
-	- Fill all the fields and put all the code in a .cs file in the CloudSite/CloudSite/Models named Variables.cs
+- Create DB
+- Create 2 Collections, the first for the photos and second one for the useres
+- Create a dedicate user for the db with credentals
 
-#############################################################
+```mongo
+use DATABASE_NAME
+
+db.createCollection("COLLECTION_FOR_USERS")
+
+db.createCollection("COLLECTION_FOR_PHOTOS")
+
+db.createUser(
+   {
+     user: "<USERNAME_FOR_DB>",
+     pwd: passwordPrompt(),  // Or  "<PASSWORD_FOR_DB>"
+     roles: [ { role: "readWrite", db: "<DATABASE_NAME>" } ]
+   }
+)
+```
+
+## Setup Project
+
+- Fill **all** the fields and put all the code in a .cs file in the **CloudSite/CloudSite/Models** named **Variables.cs**
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
+```C#
 namespace CloudSite.Models
 {
     public static class Variables
@@ -43,5 +67,13 @@ namespace CloudSite.Models
         public const string LOG_FILE_PATH = @"";
     }
 }
+```
 
-#############################################################
+### Copyright
+
+The authors of this software are 
+[Bert Lorenzo](https://github.com/LorenzoBert),
+[Carbonati Davide](https://github.com/DaviCarbo) and 
+[Ferrero-Merlino Leonardo](https://github.com/GlobalBlackout/).
+
+This software is released under the [Apache License](/LICENSE), Version 2.0.
