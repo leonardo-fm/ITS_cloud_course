@@ -317,8 +317,6 @@
     <Content Include="Views\Auth\Index.cshtml" />
     <Content Include="Views\Auth\Login.cshtml" />
     <Content Include="Views\Auth\SignIn.cshtml" />
-    <Content Include="Views\Auth\EmailAuth.cshtml" />
-    <Content Include="Views\Auth\SendedEmail.cshtml" />
     <Content Include="Views\Home\Home.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
@@ -329,7 +327,6 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Home\Upload.cshtml" />
     <Content Include="Views\Home\Gallery.cshtml" />
     <Content Include="Views\Home\GalleryTag.cshtml" />
   </ItemGroup>

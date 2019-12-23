@@ -1,4 +1,5 @@
 Setup MongoDB (https://docs.mongodb.com/manual/reference/command/)
+
 	- Create DB
 	- Create 2 Collections, the first for the photos and second one for the useres
 	- Create a dedicate user for the dib with credentals

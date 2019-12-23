@@ -22,12 +22,18 @@ namespace CloudSite.Controllers
         [HttpGet]
         public ActionResult Home()
         {
+            if(Session["login"] == null)
+                return RedirectToAction("Login", "Auth");
+
             return View();
         }
 
         [HttpGet]
         public ActionResult Gallery()
         {
+            if (Session["login"] == null)
+                return RedirectToAction("Login", "Auth");
+
             ConnectionBS cbs = new ConnectionBS((string)Session["user_id"]);
             string sasKey = cbs.UserBSManager.GetContainerSasUri();
 
@@ -72,7 +78,7 @@ namespace CloudSite.Controllers
 
                 AsyncFunctionToUse.UploadPhoto(file, (string)Session["user_id"]);
 
-                return View();
+                return Content("File Uploded");
             }
 
             return RedirectToAction("Home", "Home");

@@ -39,11 +39,12 @@ namespace CloudSite.Controllers
 
             if (cu.CheckPasswordIsTheSame(ufl.UserPasswordForLogin, user.UserPassword))
             {
-                Session.Add("user_id", user._id.ToString());
-                Session.Add("userEmail", user.UserEmail);
-                Session.Add("userName", user.UserName);
+                Session["user_id"] = user._id.ToString();
+                Session["userEmail"] = user.UserEmail;
+                Session["userName"] = user.UserName;
+                Session["login"] = true;
 
-                LogManager.WriteOnLog("user " + user._id.ToString() + " is logged in");
+                LogManager.WriteOnLog("user " + (string)Session["user_id"] + " is logged in");
 
                 return RedirectToAction("Home", "Home");
             }
@@ -74,7 +75,7 @@ namespace CloudSite.Controllers
 
                 AsyncFunctionToUse.SendMailForConvalidation(user);
 
-                return RedirectToAction("SendedEmail", "Auth");
+                return Content("Abbiamo inviato un'email di conferma");
             }
 
             return View();
@@ -88,16 +89,10 @@ namespace CloudSite.Controllers
             if (userId != null && dbm.UserManager.IsTheUserInTheDB(userId))
             {
                 dbm.UserManager.ConfirmUserToMongoDB(userId);
-                return Content("Registrazione avvenuta");
+                return RedirectToAction("Login");
             }
-            else
-                return Content("Errore");
-        }
-
-        [HttpGet]
-        public ActionResult SendedEmail()
-        {
-            return View();
+            
+            return Content("Errore");
         }
     }
 }
