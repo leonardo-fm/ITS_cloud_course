@@ -2,7 +2,7 @@
 using MongoDB.Bson;
 using System.Collections.Generic;
 
-namespace CloudSite.Models
+namespace CloudSite.Models.Photos
 {
     public class Photo
     {

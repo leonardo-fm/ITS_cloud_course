@@ -1,9 +1,5 @@
-﻿@using CloudSite.Models
-@model ImageLinks
-
-@{
-    Layout = null;
-}
+﻿@using CloudSite.Models.Photos
+@model List<Photo>
 
 <h2>Gallery</h2>
 
@@ -11,16 +7,16 @@
     <div>
         @using (Html.BeginForm("GalleryTag", "Home", FormMethod.Post))
         {
-            <input type="text" name="Tag"/><br><br>
+            <input type="text" name="Tag" /><br><br>
             <input type="submit" value="Search tag" />
             <br><br>
         }
     </div>
-    @foreach (string link in Model.ImgLinks)
+
+    @foreach (Photo photo in Model)
     {
-        <p>
-            <img src="@link" />
-        </p>
+        <a href="@Url.Action("SinglePhoto", new { photoId = photo._id.ToString() })">
+            <img src="@photo.PhotoPhat" width="25%">
+        </a>
     }
 </div>
-

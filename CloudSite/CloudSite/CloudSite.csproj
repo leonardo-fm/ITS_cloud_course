@@ -233,15 +233,15 @@
     <Compile Include="Models\ConvalidationUserAuth\ConvalidationUser.cs" />
     <Compile Include="Models\EmailSender\DefaultBodyText.cs" />
     <Compile Include="Models\EmailSender\SendMail.cs" />
-    <Compile Include="Models\ImageLinks.cs" />
     <Compile Include="Models\Log\LogManager.cs" />
+    <Compile Include="Models\Photos\PhotoShare.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\MongoDB\DBManager.cs" />
-    <Compile Include="Models\Photo.cs" />
+    <Compile Include="Models\Photos\Photo.cs" />
     <Compile Include="Models\MongoDB\PhotoManager.cs" />
     <Compile Include="Models\MongoDB\UserManager.cs" />
     <Compile Include="Models\UserForLogin.cs" />
@@ -313,7 +313,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Shared\_Prova.cshtml" />
     <Content Include="Views\Auth\Index.cshtml" />
     <Content Include="Views\Auth\Login.cshtml" />
     <Content Include="Views\Auth\SignIn.cshtml" />
@@ -328,7 +327,7 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Home\Gallery.cshtml" />
-    <Content Include="Views\Home\GalleryTag.cshtml" />
+    <Content Include="Views\Home\SinglePhoto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

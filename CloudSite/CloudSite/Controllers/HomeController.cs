@@ -10,6 +10,7 @@ using CloudSite.Models.BlobStorage;
 using CloudSite.Models.MoongoDB;
 using CloudSite.Models.Log;
 using CloudSite.Models;
+using CloudSite.Models.Photos;
 using System.Collections.Generic;
 using Azure.Storage.Blobs;
 using Azure.Identity;
@@ -39,12 +40,11 @@ namespace CloudSite.Controllers
 
             DBManager dbm = new DBManager();
             List<Photo> photos = dbm.PhotoManager.GetPhotosOfUser((string)Session["user_id"]);
-            List<string> imgLinks = new List<string>();
             foreach (Photo photo in photos)
             {
-                imgLinks.Add(photo.PhotoPhat + sasKey);
+                photo.PhotoPhat += sasKey;
             }
-            return View(new ImageLinks { ImgLinks = imgLinks });
+            return View(photos);
         }
 
         [HttpPost]
@@ -57,13 +57,12 @@ namespace CloudSite.Controllers
 
                 DBManager dbm = new DBManager();
                 List<Photo> photos = dbm.PhotoManager.GetPhotosWithTag((string)Session["user_id"], tag);
-                List<string> imgLinks = new List<string>();
                 foreach (Photo photo in photos)
                 {
-                    imgLinks.Add(photo.PhotoPhat + sasKey);
+                    photo.PhotoPhat += sasKey;
                 }
 
-                return View(new ImageLinks { ImgLinks = imgLinks });
+                return View("Gallery", photos);
             }
 
             return RedirectToAction("Gallery", "Home");
@@ -82,6 +81,42 @@ namespace CloudSite.Controllers
             }
 
             return RedirectToAction("Home", "Home");
+        }
+
+        public ActionResult SinglePhoto(string photoId)
+        {
+            if (Session["login"] == null)
+                return RedirectToAction("Login", "Auth");
+
+            DBManager dbm = new DBManager();
+            PhotoShare p = new PhotoShare();
+            p.PhotoToShare = dbm.PhotoManager.GetPhotoForDetails((string)Session["user_id"], photoId);
+
+            ConnectionBS cbs = new ConnectionBS((string)Session["user_id"]);
+            p.PhotoToShare.PhotoPhat += cbs.UserBSManager.GetContainerSasUri();
+
+            return View(p);
+        }
+
+        [HttpPost]
+        public ActionResult SharePhoto(PhotoShare photoShare)
+        {
+            DateTime finalDate = new DateTime(
+                photoShare.DateOfExpire.Year, 
+                photoShare.DateOfExpire.Month, 
+                photoShare.DateOfExpire.Day, 
+                photoShare.TimeOfExpire.Hours, 
+                photoShare.TimeOfExpire.Minutes, 
+                photoShare.TimeOfExpire.Seconds);
+
+            return Content(photoShare.PhotoToShare._id.ToString() + " = " + finalDate.ToString());
+        }
+
+        public ActionResult Logout()
+        {
+            Session.Abandon();
+
+            return RedirectToAction("Index", "Auth");
         }
     }
 }

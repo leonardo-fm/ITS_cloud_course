@@ -1,9 +1,10 @@
 ﻿using CloudSite.Models.BlobStorage;
-using CloudSite.Models.ComputerVision;
 using CloudSite.Models.ConvalidationUserAuth;
+using CloudSite.Models.ComputerVision;
 using CloudSite.Models.EmailSender;
-using CloudSite.Models.Log;
 using CloudSite.Models.MoongoDB;
+using CloudSite.Models.Photos;
+using CloudSite.Models.Log;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;

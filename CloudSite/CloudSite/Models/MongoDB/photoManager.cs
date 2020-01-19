@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using CloudSite.Models.Photos;
 
 namespace CloudSite.Models.MoongoDB
 {
@@ -26,10 +27,9 @@ namespace CloudSite.Models.MoongoDB
             return userPhotos.OrderBy(x => x.PhotoTimeOfUpload).Reverse().ToList();
         }
 
-        public Photo GetPhotoForDetails(string userId, string photoName)
+        public Photo GetPhotoForDetails(string userId, string photoId)
         {
-            int indexOfPoint = photoName.IndexOf('.');
-            ObjectId photo_id = new ObjectId(photoName.Substring(0, indexOfPoint));
+            ObjectId photo_id = new ObjectId(photoId);
             return _photoCollection.Find(x => x._id == photo_id && x.UserId == userId).FirstOrDefault() as Photo;
         }
 
