@@ -1,0 +1,204 @@
+﻿@model CloudSite.Models.Photos.PhotoShare
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SinglePhoto</title>
+</head>
+<body>
+    <div>
+        <h2>Photo</h2><br />
+        <h3>
+            @Html.ActionLink("Back to the gallery", "Gallery")
+        </h3>
+
+        <br /><hr />
+
+        @using (Html.BeginForm("SharePhoto", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                <h4>PhotoShare</h4>
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                @Html.Hidden("photoPath", Model.PhotoToShare.PhotoPhatOriginalSize)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DateOfExpire, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.DateOfExpire, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DateOfExpire, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TimeOfExpire, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.TimeOfExpire, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TimeOfExpire, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Share" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+
+        <hr /><br />
+        <dl class="dl-horizontal">
+
+            @if (Model.PhotoToShare.ImageName != "")
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.PhotoToShare.ImageName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PhotoToShare.ImageName)
+                </dd>
+                <br />
+            }
+
+            @if (Model.PhotoToShare.UserId != "")
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.PhotoToShare.UserId)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PhotoToShare.UserId)
+                </dd>
+                <br />
+            }
+
+            @if (Model.PhotoToShare.Tags != null && Model.PhotoToShare.Tags.Length != 0)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.PhotoToShare.Tags)
+                </dt>
+
+                <dd>
+                    @foreach (string tag in Model.PhotoToShare.Tags)
+                    {
+                        <div>@tag</div>
+                    }
+                </dd>
+                <br />
+            }
+
+            @if (Model.PhotoToShare.PhotoPhatOriginalSize != "")
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.PhotoToShare.PhotoPhatOriginalSize)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PhotoToShare.PhotoPhatOriginalSize)
+                </dd>
+                <br />
+            }
+
+            @if (Model.PhotoToShare.PhotoTimeOfUpload != "")
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.PhotoToShare.PhotoTimeOfUpload)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PhotoToShare.PhotoTimeOfUpload)
+                </dd>
+                <br />
+            }
+
+            @if (Model.PhotoToShare.photoGpsLatitude != null)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.PhotoToShare.photoGpsLatitude)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PhotoToShare.photoGpsLatitude)
+                </dd>
+                <br />
+            }
+
+            @if (Model.PhotoToShare.photoGpsLongitude != null)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.PhotoToShare.photoGpsLongitude)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PhotoToShare.photoGpsLongitude)
+                </dd>
+                <br />
+            }
+
+            @if (Model.PhotoToShare.photoTagDateTime != "")
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.PhotoToShare.photoTagDateTime)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PhotoToShare.photoTagDateTime)
+                </dd>
+                <br />
+            }
+
+            @if (Model.PhotoToShare.photoTagImageWidth != "")
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.PhotoToShare.photoTagImageWidth)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PhotoToShare.photoTagImageWidth)
+                </dd>
+                <br />
+            }
+
+            @if (Model.PhotoToShare.photoTagImageHeight != "")
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.PhotoToShare.photoTagImageHeight)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PhotoToShare.photoTagImageHeight)
+                </dd>
+                <br />
+            }
+
+            @if (Model.PhotoToShare.photoTagThumbnailEquipModel != "")
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.PhotoToShare.photoTagThumbnailEquipModel)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PhotoToShare.photoTagThumbnailEquipModel)
+                </dd>
+                <br />
+            }
+
+            @if (Model.PhotoToShare.PhotoPhatOriginalSize != "")
+            {
+                <dt>
+                    Image
+                </dt>
+                <br />
+
+                <dd>
+                    <img src="@Html.DisplayFor(model => model.PhotoToShare.PhotoPhatWhitSasKey)" , class="img-responsive center-block">
+                </dd>
+                <br />
+            }
+        </dl>
+    </div>
+</body>
+</html>

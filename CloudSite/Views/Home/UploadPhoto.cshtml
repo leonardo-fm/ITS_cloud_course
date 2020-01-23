@@ -1,0 +1,28 @@
+﻿@model String
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>UploadPhoto</title>
+</head>
+<body>
+    <div>
+        <h2>UploadPhoto</h2><br />
+        <p>
+            @if (Model != "")
+            {
+                @Model;
+            }
+        </p>
+        <div>
+            @using (Html.BeginForm("Upload", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <label for="file">Upload Image:</label>
+                <input type="file" name="file" id="file" /><br><br>
+                <input type="submit" value="Upload Image" />
+                <br><br>
+            }
+        </div>
+    </div>
+</body>
+</html>
