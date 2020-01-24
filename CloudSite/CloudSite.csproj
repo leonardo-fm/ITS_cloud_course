@@ -205,7 +205,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\GalleryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PhotoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -217,13 +219,14 @@
     <Compile Include="Models\EmailSender\DefaultBodyText.cs" />
     <Compile Include="Models\EmailSender\SendMail.cs" />
     <Compile Include="Models\Log\LogManager.cs" />
+    <Compile Include="Models\ModelForViews\ModelForGalleryDelete.cs" />
     <Compile Include="Models\MongoDB\DBManager.cs" />
     <Compile Include="Models\MongoDB\PhotoManager.cs" />
     <Compile Include="Models\MongoDB\UserManager.cs" />
     <Compile Include="Models\Photos\Photo.cs" />
     <Compile Include="Models\Photos\PhotoShare.cs" />
-    <Compile Include="Models\User.cs" />
-    <Compile Include="Models\UserForLogin.cs" />
+    <Compile Include="Models\User\UserModel.cs" />
+    <Compile Include="Models\User\UserForLogin.cs" />
     <Compile Include="Models\Variables.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -260,13 +263,14 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Gallery.cshtml" />
+    <Content Include="Views\Gallery\Gallery.cshtml" />
     <Content Include="Views\Home\Home.cshtml" />
-    <Content Include="Views\Home\SinglePhoto.cshtml" />
+    <Content Include="Views\Photo\SinglePhoto.cshtml" />
     <Content Include="Views\Auth\Index.cshtml" />
-    <Content Include="Views\Auth\Login.cshtml" />
-    <Content Include="Views\Auth\SignIn.cshtml" />
     <Content Include="Views\Home\UploadPhoto.cshtml" />
+    <Content Include="Views\Gallery\GalleryDelete.cshtml" />
+    <Content Include="Views\Auth\Signin.cshtml" />
+    <Content Include="Views\Auth\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

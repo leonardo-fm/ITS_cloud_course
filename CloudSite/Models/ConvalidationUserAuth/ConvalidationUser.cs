@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
-using System.Web;
+using CloudSite.Models.User;
 
 namespace CloudSite.Models.ConvalidationUserAuth
 {
@@ -14,7 +11,7 @@ namespace CloudSite.Models.ConvalidationUserAuth
         private string _userEmail;
         private string _userPassword;
 
-        public ConvalidationUser(User user)
+        public ConvalidationUser(UserModel user)
         {
             _userName = user.UserName;
             _userEmail = user.UserEmail;

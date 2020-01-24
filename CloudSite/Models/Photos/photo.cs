@@ -14,6 +14,8 @@ namespace CloudSite.Models.Photos
         public string PhotoPhatPreview { get; set; }
         public string PhotoPhatWhitSasKey { get; set; }
         public string PhotoTimeOfUpload { get; set; }
+        public string PhotoNameOriginalSize { get; set; }
+        public string PhotoNamePreview { get; set; }
 
 
         #region EXIF Variables

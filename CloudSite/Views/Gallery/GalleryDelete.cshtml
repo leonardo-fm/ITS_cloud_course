@@ -1,0 +1,34 @@
+﻿@using CloudSite.Models.Photos
+@model CloudSite.Models.ModelForViews.ModelForGalleryDelete
+
+<br />
+<div class="container">
+    <div class="col-md-1">
+        <h2>Gallery</h2>
+    </div>
+    <div class="col-md-offset-8">
+        @Html.ActionLink("Back", "Gallery", "Gallery")
+    </div>
+</div>
+<br />
+<br />
+
+
+@using (Html.BeginForm("DeletePhotos", "Photo", FormMethod.Get, new { photosToDelete = Model._PhotosToDelete }))
+{
+    <div class="container">
+        @foreach (Photo photo in Model._Photos)
+        {
+            <div class="col-md-3">
+                <img src="@photo.PhotoPhatWhitSasKey">
+                <p>
+                    @Html.CheckBoxFor(item => item._PhotosToDelete[photo.PhotoNameOriginalSize])
+                </p>
+            </div>
+        }
+    </div>
+    <p>
+        <input type="submit" , value="Delete" />
+    </p>
+}
+

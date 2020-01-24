@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using CloudSite.Models;
+using CloudSite.Models.User;
 using CloudSite.Models.Log;
 using CloudSite.Models.MoongoDB;
 using CloudSite.Models.ConvalidationUserAuth;
@@ -9,13 +9,11 @@ namespace CloudSite.Controllers
 {
     public class AuthController : Controller
     {
-        [HttpGet]
         public ActionResult Index()
         {
             return View();
         }
 
-        [HttpGet]
         public ActionResult Login()
         {
             return View();
@@ -26,7 +24,7 @@ namespace CloudSite.Controllers
         {
             DBManager dbm = new DBManager();
 
-            User user = dbm.UserManager.GetUserData(ufl.UserEmailForLogin);
+            UserModel user = dbm.UserManager.GetUserData(ufl.UserEmailForLogin);
             if (user == null || !user.ConfirmedEmail)
                 return View();
 
@@ -47,16 +45,14 @@ namespace CloudSite.Controllers
             return View();
         }
 
-        [HttpGet]
         public ActionResult SignIn()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult SignIn(User user)
+        public ActionResult SignIn(UserModel user)
         {
-            
             if (ModelState.IsValid)
             {
                 DBManager dbm = new DBManager();
@@ -76,7 +72,6 @@ namespace CloudSite.Controllers
             return View();
         }
 
-        [HttpGet]
         public ActionResult EmailAuth(string userId)
         {
             DBManager dbm = new DBManager();
@@ -84,7 +79,7 @@ namespace CloudSite.Controllers
             if (userId != null && dbm.UserManager.IsTheUserInTheDB(userId))
             {
                 dbm.UserManager.ConfirmUserToMongoDB(userId);
-                return RedirectToAction("Login");
+                return RedirectToAction("Login", "Auth");
             }
             
             return Content("Errore");

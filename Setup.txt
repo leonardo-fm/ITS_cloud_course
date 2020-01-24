@@ -9,11 +9,6 @@ Setup Project
 
 #############################################################
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
 namespace CloudSite.Models
 {
     public static class Variables
@@ -36,8 +31,11 @@ namespace CloudSite.Models
         public const string SUBSCRIPTION_KEY_FOR_BLOB_STORAGE = "";
         public const string ENDPOINT_SUFFIX_FOR_BLOB_STORAGE = "";
         
-	//The file path contains also the name of the log file (es @"C:\Users\Jhon\Desktop\Log\Log.log")
+	// The file path contains also the name of the log file (es @"C:\Users\Jhon\Desktop\Log\Log.log")
         public const string LOG_FILE_PATH = @"";
+	// Like @"https://localhost:44324"
+	public const string URL_OF_THE_HOST = @"";
+
     }
 }
 

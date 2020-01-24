@@ -8,13 +8,26 @@
 <body>
     <div>
         <h2>Photo</h2><br />
-        <h3>
-            @Html.ActionLink("Back to the gallery", "Gallery")
-        </h3>
+
+        <div class="row">
+            <div class="col-md-4">
+                <h3>
+                    @Html.ActionLink("Back to the gallery", "Gallery", "Gallery")
+                </h3>
+            </div>
+            @using (Html.BeginForm("DeletePhoto", "Photo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.Hidden("photoOS", Model.PhotoToShare.PhotoNameOriginalSize);
+                @Html.Hidden("photoP", Model.PhotoToShare.PhotoNamePreview);
+                <div class="col-md-offset-8">
+                    <input type="submit" value="Delete" class="btn btn-default" />
+                </div>
+            }
+        </div>
 
         <br /><hr />
 
-        @using (Html.BeginForm("SharePhoto", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        @using (Html.BeginForm("SharePhoto", "Photo", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
             <div class="form-horizontal">

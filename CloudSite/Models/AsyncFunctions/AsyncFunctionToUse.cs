@@ -1,9 +1,10 @@
-﻿using CloudSite.Models.BlobStorage;
-using CloudSite.Models.ConvalidationUserAuth;
+﻿using CloudSite.Models.ConvalidationUserAuth;
 using CloudSite.Models.ComputerVision;
 using CloudSite.Models.EmailSender;
+using CloudSite.Models.BlobStorage;
 using CloudSite.Models.MoongoDB;
 using CloudSite.Models.Photos;
+using CloudSite.Models.User;
 using CloudSite.Models.Log;
 using MongoDB.Bson;
 using System;
@@ -20,7 +21,6 @@ namespace CloudSite.Models.AsyncFunctions
 {
     public class AsyncFunctionToUse
     {
-        /*DA IMPLEMENTARE, SERVE UNA FUNZIONE IN JS CHE PERMETTA DI TIRARE UNA LISTA DELLE IMMAGINI SELEZIONATE E LE SPEDISCA AL SERVER*/
         public static void RemoveImages(string userId, List<string> listOfTheNamesOfPhotosToBeRemoveWithExtension)
         {
             DBManager dbm = new DBManager();
@@ -30,7 +30,10 @@ namespace CloudSite.Models.AsyncFunctions
             foreach (string nameWithExtesion in listOfTheNamesOfPhotosToBeRemoveWithExtension)
             {
                 int indexOfPoint = nameWithExtesion.IndexOf('.');
-                photosNameNoExtension.Add(nameWithExtesion.Substring(0, indexOfPoint));
+
+                if(!nameWithExtesion.Contains("_Preview"))
+                    photosNameNoExtension.Add(nameWithExtesion.Substring(0, indexOfPoint));
+
                 LogManager.WriteOnLog("user " + userId + " have delited an image with name " + nameWithExtesion);
             }
 
@@ -40,9 +43,11 @@ namespace CloudSite.Models.AsyncFunctions
 
             removeFromMongoDB.Start();
             RemoveFromBlobStorage.Start();
+
+            Task.WhenAll(removeFromMongoDB, RemoveFromBlobStorage).Wait();
         }
 
-        public static void SendMailForConvalidation(User user)
+        public static void SendMailForConvalidation(UserModel user)
         {
             Task sendNewEmail = new Task(() =>
             {
@@ -97,7 +102,7 @@ namespace CloudSite.Models.AsyncFunctions
                 var imageToBeCompress = Image.FromStream(photoForBSP);
                 photoForBSP.Seek(0, SeekOrigin.Begin);
 
-                var photoPreview = ResizeImage(imageToBeCompress, 300);
+                var photoPreview = ResizeImage(imageToBeCompress);
 
                 EncoderParameters ep = new EncoderParameters();
                 ep.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 0L);
@@ -110,15 +115,13 @@ namespace CloudSite.Models.AsyncFunctions
                 Task sendImageToComputerVisionAndBlobStorage = new Task(
                     () => SendImageToCVandBS(userPhoto, photoForCV, photoForBSOS, photoForBSPC, userId, extension, exifArray));
                 sendImageToComputerVisionAndBlobStorage.Start();
-                // per aspettare un response qui
+                sendImageToComputerVisionAndBlobStorage.Wait();
             }
         }
 
-        private static Bitmap ResizeImage(Image image, int width)
+        private static Bitmap ResizeImage(Image image)
         {
-            var height = (int)((double)width / image.Width * image.Height);
-            Bitmap destImage = new Bitmap(image, new Size(width, height));
-            destImage.SetResolution(36, 36);
+            Bitmap destImage = new Bitmap(image, new Size(300, 169));
 
             return destImage;
         }
@@ -145,10 +148,14 @@ namespace CloudSite.Models.AsyncFunctions
             Task uploadImagePToBlobStorage = new Task(() => UploadPhotoPToBlobStorage(userId, photoForBSP, extension, ref userPhoto));
 
             sendImageToComputerVision.Start();
+
             uploadImageOSToBlobStorage.Start();
+            // We have to wait bacause we need the _id for the photoPreview
+            uploadImageOSToBlobStorage.Wait();
+
             uploadImagePToBlobStorage.Start();
 
-            Task.WhenAll(sendImageToComputerVision, uploadImageOSToBlobStorage, uploadImagePToBlobStorage).Wait();
+            Task.WhenAll(sendImageToComputerVision, uploadImagePToBlobStorage).Wait();
 
             userPhoto.Tags = sendImageToComputerVision.Result;
             userPhoto.UserId = userId;
@@ -193,7 +200,10 @@ namespace CloudSite.Models.AsyncFunctions
         private static void UploadPhotoOSToBlobStorage(string userId, Stream photo, string extension, ref Photo userPhoto)
         {
             userPhoto._id = ObjectId.GenerateNewId();
+
             string photoName = userPhoto._id + extension;
+            userPhoto.PhotoNameOriginalSize = photoName;
+
             userPhoto.PhotoPhatOriginalSize = string.Format("https://{0}.blob.core.windows.net/{1}/{2}", 
                 Variables.ACCOUNT_NAME_FOR_BLOB_STORAGE, userId, photoName);
 
@@ -203,8 +213,9 @@ namespace CloudSite.Models.AsyncFunctions
 
         private static void UploadPhotoPToBlobStorage(string userId, Stream photo, string extension, ref Photo userPhoto)
         {
-            userPhoto._id = ObjectId.GenerateNewId();
-            string photoName = userPhoto._id + "_Preview" + extension;
+            string photoName = userPhoto._id.ToString() + "_Preview" + extension;
+            userPhoto.PhotoNamePreview = photoName;
+
             userPhoto.PhotoPhatPreview = string.Format("https://{0}.blob.core.windows.net/{1}/{2}", 
                 Variables.ACCOUNT_NAME_FOR_BLOB_STORAGE, userId, photoName);
 

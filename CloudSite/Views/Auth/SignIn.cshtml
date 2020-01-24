@@ -1,21 +1,42 @@
-﻿<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>SignIn</title>
-</head>
-<body>
-    <h2>SignIn</h2><br />
-    <div>
-        @using (Html.BeginForm("SignIn", "Auth", FormMethod.Post))
-        {
-            <p>Name:<br></p>
-            <input type="text" name="UserName"><br><br>
-            <p>Email:<br></p>
-            <input type="text" name="UserEmail"><br><br>
-            <p>Password:<br></p>
-            <input type="password" name="UserPassword"><br><br>
-            <input type="submit" value="Submit" class="submit">
-        }
+﻿@model CloudSite.Models.User.UserModel
+
+<h2>Signin</h2>
+
+@using (Html.BeginForm("SignIn", "Auth", FormMethod.Post, new { enctype = "multipart/form-data" })) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UserEmail, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UserPassword, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserPassword, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Signin" class="btn btn-default" />
+            </div>
+        </div>
     </div>
-</body>
-</html>
+}
