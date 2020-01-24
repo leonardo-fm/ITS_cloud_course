@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.29324.140
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudSite", "CloudSite\CloudSite.csproj", "{3A2A3118-A64E-40F6-B9F4-9B63189BDA4A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudSite", "CloudSite.csproj", "{7866A574-E429-4EF2-BAC9-29969A9A9831}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3A2A3118-A64E-40F6-B9F4-9B63189BDA4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3A2A3118-A64E-40F6-B9F4-9B63189BDA4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3A2A3118-A64E-40F6-B9F4-9B63189BDA4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3A2A3118-A64E-40F6-B9F4-9B63189BDA4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7866A574-E429-4EF2-BAC9-29969A9A9831}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7866A574-E429-4EF2-BAC9-29969A9A9831}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7866A574-E429-4EF2-BAC9-29969A9A9831}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7866A574-E429-4EF2-BAC9-29969A9A9831}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {7E70E09D-E6FA-4336-83E2-31DCAD27440E}
+		SolutionGuid = {74A04560-22B5-41D2-8A36-C254D8794FA6}
 	EndGlobalSection
 EndGlobal
