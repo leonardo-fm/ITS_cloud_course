@@ -71,6 +71,9 @@ namespace CloudSite.Models
 }
 ```
 
+## Roslyn.zip
+For some reason the project can't create roslyn's folder inside ProgettoCloud\CloudSite\bin, so I attach a folder zipped to extract and put in the folder ProgettoCloud\CloudSite\bin
+
 ### Copyright
 
 The authors of this software are 
