@@ -2,10 +2,10 @@
 using CloudSite.Models.ComputerVision;
 using CloudSite.Models.EmailSender;
 using CloudSite.Models.BlobStorage;
+using CloudSite.Models.LogManager;
 using CloudSite.Models.MoongoDB;
 using CloudSite.Models.Photos;
 using CloudSite.Models.User;
-using CloudSite.Models.Log;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
@@ -34,7 +34,8 @@ namespace CloudSite.Models.AsyncFunctions
                 if(!nameWithExtesion.Contains("_Preview"))
                     photosNameNoExtension.Add(nameWithExtesion.Substring(0, indexOfPoint));
 
-                LogManager.WriteOnLog("user " + userId + " have delited an image with name " + nameWithExtesion);
+                // Log
+                LogMaster.WriteOnLog("user " + userId + " have deleted an image with name " + nameWithExtesion);
             }
 
             Task removeFromMongoDB = new Task(() => dbm.PhotoManager.RemovePhotos(photosNameNoExtension));

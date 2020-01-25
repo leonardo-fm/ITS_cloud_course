@@ -1,5 +1,6 @@
 ﻿using CloudSite.Models.AsyncFunctions;
 using CloudSite.Models.BlobStorage;
+using CloudSite.Models.LogManager;
 using CloudSite.Models.MoongoDB;
 using CloudSite.Models.Photos;
 using System;
@@ -44,6 +45,10 @@ namespace CloudSite.Controllers
             ConnectionBS cbs = new ConnectionBS((string)Session["user_id"]);
             string sasKey = cbs.UserBSManager.GetContainerSasUri(totalMinutes);
 
+            // Log
+            string[] urlParts = photoPath.Split('/');
+            LogMaster.WriteOnLog("user " + (string)Session["user_id"] + " has share an image named " + urlParts.Last() + " for " + totalMinutes + " minutes ");
+            
             return Content(photoPath + sasKey);
         }
 

@@ -1,0 +1,38 @@
+﻿@model CloudSite.Models.User.UserModel
+
+@{
+    ViewBag.Title = "Options";
+}
+
+<h2>Options</h2>
+
+<div>
+    <h4>UserModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserEmail)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @using (Html.BeginForm("DeleteAccount", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <p>If you are sure to want to delete your account to type below the username and submit</p>
+        <input type="text" name="confirmUsername">
+        <input type="submit" value="Delete account" />
+    }
+</p>

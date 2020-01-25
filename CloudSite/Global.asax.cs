@@ -1,4 +1,4 @@
-﻿using CloudSite.Models.Log;
+﻿using CloudSite.Models.LogManager;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -15,8 +15,8 @@ namespace CloudSite
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            /*My Methods*/
-            Task whaitForCheckOrCreateLog = new Task(() => LogManager.CreateOrCheckIfExistFileLog());
+            /* My Methods for Log */
+            Task whaitForCheckOrCreateLog = new Task(() => LogMaster.CreateOrCheckIfExistFileLog());
             whaitForCheckOrCreateLog.Start();
             whaitForCheckOrCreateLog.Wait();
         }

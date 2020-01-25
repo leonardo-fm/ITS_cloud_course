@@ -75,5 +75,10 @@ namespace CloudSite.Models.MoongoDB
 
             return userDB;
         }
+
+        public void DeleteUserFromDB(string userId)
+        {
+            _userCollection.FindOneAndDelete(x => x._id == new ObjectId(userId));
+        }
     }
 }

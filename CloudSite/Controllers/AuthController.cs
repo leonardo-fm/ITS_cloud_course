@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 using CloudSite.Models.User;
-using CloudSite.Models.Log;
+using CloudSite.Models.LogManager;
 using CloudSite.Models.MoongoDB;
 using CloudSite.Models.ConvalidationUserAuth;
 using CloudSite.Models.AsyncFunctions;
@@ -37,7 +37,8 @@ namespace CloudSite.Controllers
                 Session["userName"] = user.UserName;
                 Session["login"] = 1;
 
-                LogManager.WriteOnLog("user " + (string)Session["user_id"] + " is logged in");
+                // Log
+                LogMaster.WriteOnLog("user " + (string)Session["user_id"] + " is logged in");
 
                 return RedirectToAction("Home", "Home");
             }
@@ -65,6 +66,9 @@ namespace CloudSite.Controllers
                     return View();
 
                 AsyncFunctionToUse.SendMailForConvalidation(user);
+
+                // Log
+                LogMaster.WriteOnLog("a new user have signin with username " + user.UserName);
 
                 return Content("Abbiamo inviato un'email di conferma");
             }

@@ -218,7 +218,7 @@
     <Compile Include="Models\ConvalidationUserAuth\ConvalidationUser.cs" />
     <Compile Include="Models\EmailSender\DefaultBodyText.cs" />
     <Compile Include="Models\EmailSender\SendMail.cs" />
-    <Compile Include="Models\Log\LogManager.cs" />
+    <Compile Include="Models\LogManager\LogMaster.cs" />
     <Compile Include="Models\ModelForViews\ModelForGalleryDelete.cs" />
     <Compile Include="Models\MongoDB\DBManager.cs" />
     <Compile Include="Models\MongoDB\PhotoManager.cs" />
@@ -271,6 +271,7 @@
     <Content Include="Views\Gallery\GalleryDelete.cshtml" />
     <Content Include="Views\Auth\Signin.cshtml" />
     <Content Include="Views\Auth\Login.cshtml" />
+    <Content Include="Views\Home\Options.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

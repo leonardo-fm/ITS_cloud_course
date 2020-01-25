@@ -72,5 +72,10 @@ namespace CloudSite.Models.BlobStorage
             int totalNumberOfMinutesToAdd = (int)(expireDate - DateTime.Now).TotalMinutes;
             return GetContainerSasUri(totalNumberOfMinutesToAdd);
         }
+
+        public void DeleteUserContainer()
+        {
+            UserContainer.DeleteIfExists();
+        }
     }
 }
