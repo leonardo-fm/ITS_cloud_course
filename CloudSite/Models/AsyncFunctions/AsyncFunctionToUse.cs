@@ -77,44 +77,49 @@ namespace CloudSite.Models.AsyncFunctions
 
             string extension = file.FileName.Substring(file.FileName.IndexOf('.'));
 
-            Stream photoForCV = new MemoryStream();
-            Stream photoForBSOS = new MemoryStream();
-            Stream photoForBSP = new MemoryStream();
+            Stream photoForCompress = new MemoryStream();
+            Stream photoForComputerVision = new MemoryStream();
+            Stream photoForBlobStorageOriginalSize = new MemoryStream();
+            Stream photoForBlobStoragePreview = new MemoryStream();
+            Stream photoForBlobStoragePreviewClear = new MemoryStream();
 
             using (Stream photo = file.InputStream)
             {
-                photo.CopyTo(photoForCV);
-                photoForCV.Seek(0, SeekOrigin.Begin);
+                EncoderParameters ep = new EncoderParameters();
+                ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Png);
 
-                photo.Seek(0, SeekOrigin.Begin);
+                photo.CopyTo(photoForCompress);
+                photoForComputerVision.Seek(0, SeekOrigin.Begin);
 
-                photo.CopyTo(photoForBSOS);
-                photoForBSOS.Seek(0, SeekOrigin.Begin);
+                photoForCompress.CopyTo(photoForComputerVision);
+                photoForComputerVision.Seek(0, SeekOrigin.Begin);
 
-                photo.Seek(0, SeekOrigin.Begin);
+                photoForCompress.Seek(0, SeekOrigin.Begin);
 
-                photo.CopyTo(photoForBSP);
-                photoForBSP.Seek(0, SeekOrigin.Begin);
+                photoForCompress.CopyTo(photoForBlobStorageOriginalSize);
+                photoForBlobStorageOriginalSize.Seek(0, SeekOrigin.Begin);
 
-                photo.Seek(0, SeekOrigin.Begin);
-                PropertyItem[] exifArray = Image.FromStream(photo).PropertyItems;
+                photoForCompress.Seek(0, SeekOrigin.Begin);
+
+                photoForCompress.CopyTo(photoForBlobStoragePreview);
+                photoForBlobStoragePreview.Seek(0, SeekOrigin.Begin);
+
+                photoForCompress.Seek(0, SeekOrigin.Begin);
+                PropertyItem[] exifArray = Image.FromStream(photoForCompress).PropertyItems;
 
                 /* Compress image */
-                var imageToBeCompress = Image.FromStream(photoForBSP);
-                photoForBSP.Seek(0, SeekOrigin.Begin);
+                var imageToBeCompress = Image.FromStream(photoForBlobStoragePreview);
+                photoForBlobStoragePreview.Seek(0, SeekOrigin.Begin);
 
                 var photoPreview = ResizeImage(imageToBeCompress);
 
-                EncoderParameters ep = new EncoderParameters();
                 ep.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 0L);
-                ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Png);
 
-                Stream photoForBSPC = new MemoryStream();
-                photoPreview.Save(photoForBSPC, jgpEncoder, ep);
-                photoForBSPC.Seek(0, SeekOrigin.Begin);
+                photoPreview.Save(photoForBlobStoragePreviewClear, jgpEncoder, ep);
+                photoForBlobStoragePreviewClear.Seek(0, SeekOrigin.Begin);
 
                 Task sendImageToComputerVisionAndBlobStorage = new Task(
-                    () => SendImageToCVandBS(userPhoto, photoForCV, photoForBSOS, photoForBSPC, userId, extension, exifArray));
+                    () => SendImageToCVandBS(userPhoto, photoForComputerVision, photoForBlobStorageOriginalSize, photoForBlobStoragePreviewClear, userId, extension, exifArray));
                 sendImageToComputerVisionAndBlobStorage.Start();
                 sendImageToComputerVisionAndBlobStorage.Wait();
             }

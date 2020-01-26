@@ -49,6 +49,8 @@ namespace CloudSite.Models
         public const string PORT_FOR_MONGODB = "";
         public const string USER_FOR_AUTHENTICATION_MONGODB = "";
         public const string PASSWORD_FOR_AUTHENTICATION_MONGODB = "";
+	public const string ADDITIONAL_PARAMETERS_FOR_CONNECTION = @"";
+
         public const string NAME_OF_DATABASE_IN_MONGODB = "";
         public const string NAME_OF_TABLE_FOR_USERS_IN_MONGODB = "";
         public const string NAME_OF_TABLE_FOR_PHOTOS_IN_MONGODB = "";

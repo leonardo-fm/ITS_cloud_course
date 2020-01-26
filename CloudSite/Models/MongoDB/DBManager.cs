@@ -27,7 +27,7 @@ namespace CloudSite.Models.MoongoDB
                 Variables.PASSWORD_FOR_AUTHENTICATION_MONGODB,
                 Variables.HOST_FOR_MONGODB,
                 Variables.PORT_FOR_MONGODB,
-                Variables.NAME_OF_DATABASE_IN_MONGODB
+                Variables.ADDITIONAL_PARAMETERS_FOR_CONNECTION
                 );
 
                 _databaseConnection = new MongoClient(connectionString);

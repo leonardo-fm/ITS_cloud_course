@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -35,6 +36,9 @@ namespace CloudSite.Controllers
         {
             if (file != null && file.ContentType.Contains("image"))
             {
+                if (file.ContentLength > 5000000)
+                    return RedirectToAction("UploadPhoto", "Home", new { msg = "The file is too big, max 5 MB" });
+
                 // Log
                 LogMaster.WriteOnLog("user " + (string)Session["user_id"] + " uploaded an image with name " + file.FileName);
 

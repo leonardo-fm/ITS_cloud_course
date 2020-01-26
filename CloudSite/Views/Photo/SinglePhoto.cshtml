@@ -67,7 +67,7 @@
             @if (Model.PhotoToShare.ImageName != "")
             {
                 <dt>
-                    @Html.DisplayNameFor(model => model.PhotoToShare.ImageName)
+                    Name
                 </dt>
 
                 <dd>
@@ -76,22 +76,10 @@
                 <br />
             }
 
-            @if (Model.PhotoToShare.UserId != "")
-            {
-                <dt>
-                    @Html.DisplayNameFor(model => model.PhotoToShare.UserId)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.PhotoToShare.UserId)
-                </dd>
-                <br />
-            }
-
             @if (Model.PhotoToShare.Tags != null && Model.PhotoToShare.Tags.Length != 0)
             {
                 <dt>
-                    @Html.DisplayNameFor(model => model.PhotoToShare.Tags)
+                    Tags
                 </dt>
 
                 <dd>
@@ -103,22 +91,10 @@
                 <br />
             }
 
-            @if (Model.PhotoToShare.PhotoPhatOriginalSize != "")
-            {
-                <dt>
-                    @Html.DisplayNameFor(model => model.PhotoToShare.PhotoPhatOriginalSize)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.PhotoToShare.PhotoPhatOriginalSize)
-                </dd>
-                <br />
-            }
-
             @if (Model.PhotoToShare.PhotoTimeOfUpload != "")
             {
                 <dt>
-                    @Html.DisplayNameFor(model => model.PhotoToShare.PhotoTimeOfUpload)
+                    Photo uploaded in date
                 </dt>
 
                 <dd>
@@ -130,7 +106,7 @@
             @if (Model.PhotoToShare.photoGpsLatitude != null)
             {
                 <dt>
-                    @Html.DisplayNameFor(model => model.PhotoToShare.photoGpsLatitude)
+                    Latitude
                 </dt>
 
                 <dd>
@@ -142,7 +118,7 @@
             @if (Model.PhotoToShare.photoGpsLongitude != null)
             {
                 <dt>
-                    @Html.DisplayNameFor(model => model.PhotoToShare.photoGpsLongitude)
+                    Longitude
                 </dt>
 
                 <dd>
@@ -154,7 +130,7 @@
             @if (Model.PhotoToShare.photoTagDateTime != "")
             {
                 <dt>
-                    @Html.DisplayNameFor(model => model.PhotoToShare.photoTagDateTime)
+                    Photo taken on date
                 </dt>
 
                 <dd>
@@ -166,7 +142,7 @@
             @if (Model.PhotoToShare.photoTagImageWidth != "")
             {
                 <dt>
-                    @Html.DisplayNameFor(model => model.PhotoToShare.photoTagImageWidth)
+                    Width
                 </dt>
 
                 <dd>
@@ -178,7 +154,7 @@
             @if (Model.PhotoToShare.photoTagImageHeight != "")
             {
                 <dt>
-                    @Html.DisplayNameFor(model => model.PhotoToShare.photoTagImageHeight)
+                    Height
                 </dt>
 
                 <dd>
@@ -190,7 +166,7 @@
             @if (Model.PhotoToShare.photoTagThumbnailEquipModel != "")
             {
                 <dt>
-                    @Html.DisplayNameFor(model => model.PhotoToShare.photoTagThumbnailEquipModel)
+                    Camera model
                 </dt>
 
                 <dd>
