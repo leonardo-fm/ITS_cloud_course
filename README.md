@@ -2,18 +2,18 @@
 
 ## Requirements
 
-- [MongoDB](https://docs.mongodb.com)
 - [IIS](https://www.microsoft.com/en-us/download/details.aspx?id=48264)
 - [Gmail Account](https://accounts.google.com/signup/v2/webcreateaccount?flowName=GlifWebSignIn&flowEntry=SignUp) for sending emails
 - [Azure account](https://azure.microsoft.com/en-us/)
 - [Azure Computer Vision](https://azure.microsoft.com/en-us/services/cognitive-services/computer-vision/)
 - [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
+- [Cosmos DB](https://azure.microsoft.com/en-us/services/cosmos-db/) with [MongoDB](https://docs.mongodb.com)
 
 ## Setup [MongoDB](https://docs.mongodb.com)
 
 - Create DB
 - Create 2 Collections, the first for the photos and second one for the useres
-- Create a dedicate user for the db with credentals
+- Create a dedicate user for the db with credentals (Cosmos DB gives you already user and password)
 
 ```mongo
 use DATABASE_NAME
@@ -34,11 +34,6 @@ db.createUser(
 ## Setup Project
 
 - Fill **all** the fields and put all the code in a .cs file in the **CloudSite/CloudSite/Models** named **Variables.cs**
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 ```C#
 namespace CloudSite.Models
