@@ -77,7 +77,6 @@ namespace CloudSite.Models.AsyncFunctions
 
             string extension = file.FileName.Substring(file.FileName.IndexOf('.'));
 
-            Stream photoForCompress = new MemoryStream();
             Stream photoForComputerVision = new MemoryStream();
             Stream photoForBlobStorageOriginalSize = new MemoryStream();
             Stream photoForBlobStoragePreview = new MemoryStream();
@@ -88,24 +87,24 @@ namespace CloudSite.Models.AsyncFunctions
                 EncoderParameters ep = new EncoderParameters();
                 ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Png);
 
-                photo.CopyTo(photoForCompress);
+                photo.CopyTo(photoForComputerVision);
                 photoForComputerVision.Seek(0, SeekOrigin.Begin);
 
-                photoForCompress.CopyTo(photoForComputerVision);
-                photoForComputerVision.Seek(0, SeekOrigin.Begin);
+                photo.Seek(0, SeekOrigin.Begin);
 
-                photoForCompress.Seek(0, SeekOrigin.Begin);
-
-                photoForCompress.CopyTo(photoForBlobStorageOriginalSize);
+                photo.CopyTo(photoForBlobStorageOriginalSize);
                 photoForBlobStorageOriginalSize.Seek(0, SeekOrigin.Begin);
 
-                photoForCompress.Seek(0, SeekOrigin.Begin);
+                photo.Seek(0, SeekOrigin.Begin);
 
-                photoForCompress.CopyTo(photoForBlobStoragePreview);
+                photo.CopyTo(photoForBlobStoragePreview);
                 photoForBlobStoragePreview.Seek(0, SeekOrigin.Begin);
 
-                photoForCompress.Seek(0, SeekOrigin.Begin);
-                PropertyItem[] exifArray = Image.FromStream(photoForCompress).PropertyItems;
+                photo.Seek(0, SeekOrigin.Begin);
+                Image photoForExif = Image.FromStream(photo);
+                PropertyItem[] exifArray = photoForExif.PropertyItems;
+                userPhoto.photoTagImageWidth = photoForExif.Width.ToString();
+                userPhoto.photoTagImageHeight = photoForExif.Height.ToString();
 
                 /* Compress image */
                 var imageToBeCompress = Image.FromStream(photoForBlobStoragePreview);
@@ -179,8 +178,8 @@ namespace CloudSite.Models.AsyncFunctions
             userPhoto.photoTagThumbnailEquipModel = exifDictionary.ContainsKey(0x010F) && exifDictionary.ContainsKey(0x0110) ?
                 Encoding.UTF8.GetString(exifDictionary[0x010F]).Replace("\0", "")
                 + "/" + Encoding.UTF8.GetString(exifDictionary[0x0110]).Replace("\0", "") : "";
-            userPhoto.photoTagImageWidth = exifDictionary.ContainsKey(0x0100) ? BitConverter.ToInt16(exifDictionary[0x0100], 0).ToString() : "";
-            userPhoto.photoTagImageHeight = exifDictionary.ContainsKey(0x0101) ? BitConverter.ToInt16(exifDictionary[0x0101], 0).ToString() : "";
+            //userPhoto.photoTagImageWidth = exifDictionary.ContainsKey(0x0100) ? BitConverter.ToInt16(exifDictionary[0x0100], 0).ToString() : "";
+            //userPhoto.photoTagImageHeight = exifDictionary.ContainsKey(0x0101) ? BitConverter.ToInt16(exifDictionary[0x0101], 0).ToString() : "";
 
             dbm.PhotoManager.AddPhotoToMongoDB(userPhoto);
         }
