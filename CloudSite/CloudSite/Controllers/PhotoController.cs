@@ -52,7 +52,6 @@ namespace CloudSite.Controllers
             return Content(photoPath + sasKey);
         }
 
-        [HttpPost]
         public ActionResult DeletePhoto(string photoOS, string photoP)
         {
             List<string> photosToRemove = new List<string> { photoOS, photoP };

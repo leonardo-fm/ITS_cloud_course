@@ -7,31 +7,27 @@
 </head>
 <body>
     <div>
-        <h2>Photo</h2><br />
+        <h2>Photo</h2><hr />
 
         <div class="row">
             <div class="col-md-4">
                 <h3>
                     @Html.ActionLink("Back to the gallery", "Gallery", "Gallery")
-                </h3>
+                </h3><br />
+                <h4>
+                    @Html.ActionLink("Delete", "DeletePhoto", "Photo",
+                        new { photoOS = Model.PhotoToShare.PhotoNameOriginalSize, photoP = Model.PhotoToShare.PhotoNamePreview }, null)
+                </h4>
             </div>
-            @using (Html.BeginForm("DeletePhoto", "Photo", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                @Html.Hidden("photoOS", Model.PhotoToShare.PhotoNameOriginalSize);
-                @Html.Hidden("photoP", Model.PhotoToShare.PhotoNamePreview);
-                <div class="col-md-offset-8">
-                    <input type="submit" value="Delete" class="btn btn-default" />
-                </div>
-            }
         </div>
 
-        <br /><hr />
+        <hr />
 
         @using (Html.BeginForm("SharePhoto", "Photo", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
             <div class="form-horizontal">
-                <h4>PhotoShare</h4>
+                <h4>Share photo</h4>
 
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -177,14 +173,10 @@
 
             @if (Model.PhotoToShare.PhotoPhatOriginalSize != "")
             {
-                <dt>
-                    Image
-                </dt>
-                <br />
-
-                <dd>
+                
+                <p>
                     <img src="@Html.DisplayFor(model => model.PhotoToShare.PhotoPhatWhitSasKey)" , class="img-responsive center-block">
-                </dd>
+                </p>
                 <br />
             }
         </dl>

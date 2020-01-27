@@ -12,10 +12,12 @@ namespace CloudSite.Models.Photos
 
         [Required]
         [DataType(DataType.Date)]
+        [Display(Name = "Date of expire")]
         public DateTime DateOfExpire { get; set; }
 
         [Required]
         [DataType(DataType.Time)]
+        [Display(Name = "Time of expire")]
         public TimeSpan TimeOfExpire { get; set; }
     }
 }
