@@ -1,4 +1,5 @@
 # [Final project for the cloud course](https://github.com/GlobalBlackout/ProgettoCloud)
+### [Click here to see an improved version using .NET Core](https://github.com/GlobalBlackout/CloudProjectEFCore) :sunglasses:
 
 ## Requirements
 
