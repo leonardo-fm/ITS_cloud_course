@@ -74,9 +74,7 @@ For some reason the project can't create roslyn's folder inside ProgettoCloud\Cl
 
 ### Copyright
 
-The authors of this software are 
-[Bert Lorenzo](https://github.com/LorenzoBert),
-[Carbonati Davide](https://github.com/DaviCarbo) and 
+The authors of this software is 
 [Ferrero-Merlino Leonardo](https://github.com/leonardo-fm/).
 
 This software is released under the [Apache License](/LICENSE), Version 2.0.
